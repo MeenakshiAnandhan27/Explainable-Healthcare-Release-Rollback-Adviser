@@ -1,0 +1,6 @@
+{
+  "name": "Explainable Healthcare Release Rollback Adviser",
+  "description": "Enterprise healthcare SOC dashboard providing explainable release rollback recommendations by combining technical service telemetry and business clinical impact signals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
