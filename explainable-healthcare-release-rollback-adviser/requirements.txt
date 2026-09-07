@@ -1,0 +1,5 @@
+fastapi==0.110.0
+uvicorn==0.28.0
+pydantic==2.6.4
+sqlite3-to-mysql>=0.0.1; platform_system == "NonExistent" # sqlite3 is built into Python
+python-multipart==0.0.9
