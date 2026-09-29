@@ -25,6 +25,12 @@ import { ExperimentPage } from "./pages/ExperimentPage";
 import { DecisionHistoryPage } from "./pages/DecisionHistoryPage";
 import { StakeholderValidationPage } from "./pages/StakeholderValidationPage";
 import { DocumentationPage } from "./pages/DocumentationPage";
+import { WalkthroughPage } from "./pages/WalkthroughPage";
+import { EthicsSafetyPage } from "./pages/EthicsSafetyPage";
+import { DeploymentChecklistPage } from "./pages/DeploymentChecklistPage";
+import { ErrorAnalysisPage } from "./pages/ErrorAnalysisPage";
+import { FailureModesPage } from "./pages/FailureModesPage";
+import { CompareReleasesPage } from "./pages/CompareReleasesPage";
 
 const DEFAULT_USER: UserSession = {
   username: "analyst",
@@ -221,8 +227,40 @@ export default function App() {
 
             {currentPage === "docs" && <DocumentationPage onSelectCase={handleSelectCase} />}
 
+            {currentPage === "compare" && (
+              <CompareReleasesPage
+                hospitals={hospitals}
+                onOpenDecision={handleOpenDecision}
+                user={user}
+              />
+            )}
+
+            {currentPage === "failure-modes" && (
+              <FailureModesPage
+                onSelectRelease={handleSelectRelease}
+                onNavigate={(p) => setCurrentPage(p)}
+              />
+            )}
+
+            {currentPage === "error-analysis" && (
+              <ErrorAnalysisPage
+                onSelectRelease={handleSelectRelease}
+              />
+            )}
+
+            {currentPage === "walkthrough" && (
+              <WalkthroughPage
+                onNavigate={(p) => setCurrentPage(p)}
+                onSelectRelease={handleSelectRelease}
+              />
+            )}
+
+            {currentPage === "ethics" && <EthicsSafetyPage />}
+
+            {currentPage === "deployment" && <DeploymentChecklistPage />}
+
             {/* Safe fallback for any unmatched route */}
-            {!["dashboard", "releases", "release-detail", "rules", "experiment", "analysis", "decisions", "validation", "docs"].includes(currentPage) && (
+            {!["dashboard", "releases", "release-detail", "compare", "rules", "experiment", "analysis", "failure-modes", "error-analysis", "decisions", "validation", "walkthrough", "ethics", "deployment", "docs"].includes(currentPage) && (
               <DashboardPage
                 stats={dashboardStats}
                 selectedHospitalId={selectedHospitalId}

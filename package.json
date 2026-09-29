@@ -1,5 +1,5 @@
 {
-  "name": "react-example",
+  "name": "explainable-healthcare-release-rollback-adviser",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,6 +8,9 @@
     "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "start": "node dist/server.cjs",
     "preview": "vite preview",
+    "test": "tsx tests/run_all_tests.ts",
+    "test:py": "python3 tests/run_all_tests.py",
+    "experiment": "python3 scripts/run_experiment.py",
     "lint": "tsc --noEmit"
   },
   "dependencies": {

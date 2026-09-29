@@ -76,7 +76,43 @@ export async function fetchRules(): Promise<Rule[]> {
   return res.json();
 }
 
-export async function updateRule(ruleId: string, updates: Partial<Rule>): Promise<Rule> {
+export async function fetchRuleAudit(): Promise<import("../types").RuleAuditRecord[]> {
+  const res = await fetch(`${BASE_URL}/rules/audit`);
+  if (!res.ok) throw new Error("Failed to load rule modification audit history");
+  return res.json();
+}
+
+export async function fetchMultiHospitalAnalytics(): Promise<import("../types").HospitalAnalytics[]> {
+  const res = await fetch(`${BASE_URL}/analytics/multi-hospital`);
+  if (!res.ok) throw new Error("Failed to load multi-hospital analytics");
+  return res.json();
+}
+
+export async function runReproducibleExperiment(): Promise<ExperimentData> {
+  const res = await fetch(`${BASE_URL}/experiment/run`, {
+    method: "POST"
+  });
+  if (!res.ok) throw new Error("Failed to execute reproducible experiment");
+  return res.json();
+}
+
+export async function runRegressionTests(): Promise<{
+  status: string;
+  timestamp: string;
+  total_tests: number;
+  passed: number;
+  failed: number;
+  test_framework: string;
+  results: Array<{ id: string; name: string; category: string; status: string; duration_ms?: number }>;
+}> {
+  const res = await fetch(`${BASE_URL}/tests/run`, {
+    method: "POST"
+  });
+  if (!res.ok) throw new Error("Failed to execute regression test suite");
+  return res.json();
+}
+
+export async function updateRule(ruleId: string, updates: Partial<Rule> & { user_role?: string; user_name?: string; change_reason?: string }): Promise<Rule> {
   const res = await fetch(`${BASE_URL}/rules/${encodeURIComponent(ruleId)}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -86,7 +122,8 @@ export async function updateRule(ruleId: string, updates: Partial<Rule>): Promis
     const err = await res.json();
     throw new Error(err.error || err.detail || "Failed to update rule");
   }
-  return res.json();
+  const data = await res.json();
+  return data.rule || data;
 }
 
 export async function submitDecision(payload: {

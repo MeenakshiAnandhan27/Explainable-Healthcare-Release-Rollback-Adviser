@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Rule, UserSession } from "../types";
-import { fetchRules, updateRule } from "../services/api";
+import { Rule, UserSession, RuleAuditRecord } from "../types";
+import { fetchRules, updateRule, fetchRuleAudit } from "../services/api";
 import {
   Sliders,
   ShieldCheck,
@@ -9,7 +9,9 @@ import {
   Check,
   X,
   AlertTriangle,
-  RotateCcw
+  RotateCcw,
+  History,
+  FileCheck
 } from "lucide-react";
 import { AdvisoryBanner } from "../components/AdvisoryBanner";
 
@@ -20,6 +22,7 @@ interface RiskRulesPageProps {
 
 export const RiskRulesPage: React.FC<RiskRulesPageProps> = ({ user, onSwitchRole }) => {
   const [rules, setRules] = useState<Rule[]>([]);
+  const [auditLog, setAuditLog] = useState<RuleAuditRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingRuleId, setEditingRuleId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<Rule>>({});
@@ -27,20 +30,24 @@ export const RiskRulesPage: React.FC<RiskRulesPageProps> = ({ user, onSwitchRole
   const [errorMsg, setErrorMsg] = useState("");
   const isManager = user.role === "Release Manager";
 
-  const loadRules = async () => {
+  const loadData = async () => {
     setLoading(true);
     try {
-      const data = await fetchRules();
-      setRules(data);
+      const [rulesData, auditData] = await Promise.all([
+        fetchRules(),
+        fetchRuleAudit()
+      ]);
+      setRules(rulesData);
+      setAuditLog(auditData);
     } catch (err: any) {
-      setErrorMsg(err.message || "Failed to load risk rules");
+      setErrorMsg(err.message || "Failed to load risk rules data");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadRules();
+    loadData();
   }, []);
 
   const handleStartEdit = (rule: Rule) => {
@@ -65,10 +72,17 @@ export const RiskRulesPage: React.FC<RiskRulesPageProps> = ({ user, onSwitchRole
     setErrorMsg("");
     setSaveSuccess("");
     try {
-      const updated = await updateRule(ruleId, editForm);
+      const updated = await updateRule(ruleId, {
+        ...editForm,
+        user_role: user.role,
+        user_name: user.name,
+        change_reason: `Threshold & weight calibration by ${user.name}`
+      });
       setRules((prev) => prev.map((r) => (r.rule_id === ruleId ? updated : r)));
       setEditingRuleId(null);
-      setSaveSuccess(`Rule ${ruleId} successfully updated. Live scoring recalibrated without code changes.`);
+      setSaveSuccess(`Rule ${ruleId} successfully updated and audited.`);
+      // Reload audit trail
+      fetchRuleAudit().then(setAuditLog).catch(console.error);
       setTimeout(() => setSaveSuccess(""), 4000);
     } catch (err: any) {
       setErrorMsg(err.message || "Failed to update rule");
@@ -78,9 +92,15 @@ export const RiskRulesPage: React.FC<RiskRulesPageProps> = ({ user, onSwitchRole
   const handleToggleEnabled = async (rule: Rule) => {
     if (!isManager) return;
     try {
-      const updated = await updateRule(rule.rule_id, { enabled: !rule.enabled });
+      const updated = await updateRule(rule.rule_id, {
+        enabled: !rule.enabled,
+        user_role: user.role,
+        user_name: user.name,
+        change_reason: `Rule status toggled to ${!rule.enabled ? 'ENABLED' : 'DISABLED'} by ${user.name}`
+      });
       setRules((prev) => prev.map((r) => (r.rule_id === rule.rule_id ? updated : r)));
-      setSaveSuccess(`Rule ${rule.rule_id} ${!rule.enabled ? "enabled" : "disabled"}.`);
+      setSaveSuccess(`Rule ${rule.rule_id} ${!rule.enabled ? "enabled" : "disabled"} and logged in audit.`);
+      fetchRuleAudit().then(setAuditLog).catch(console.error);
       setTimeout(() => setSaveSuccess(""), 3000);
     } catch (err: any) {
       setErrorMsg(err.message || "Failed to toggle rule");
@@ -184,7 +204,7 @@ export const RiskRulesPage: React.FC<RiskRulesPageProps> = ({ user, onSwitchRole
             </p>
           </div>
           <button
-            onClick={loadRules}
+            onClick={loadData}
             className="text-xs px-2.5 py-1 bg-white border border-slate-300 rounded text-slate-700 hover:bg-slate-50 flex items-center gap-1 cursor-pointer transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5" /> Refresh
@@ -330,6 +350,87 @@ export const RiskRulesPage: React.FC<RiskRulesPageProps> = ({ user, onSwitchRole
                     </tr>
                   );
                 })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Rule Change Audit Ledger (Phase 2 Requirement 14) */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="p-5 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <History className="w-5 h-5 text-indigo-600" />
+            <div>
+              <h3 className="text-sm font-bold text-slate-900">Immutable Rule-Change Audit Ledger</h3>
+              <p className="text-[11px] text-slate-500">Every threshold and weight adjustment is permanently recorded with before/after state</p>
+            </div>
+          </div>
+          <span className="text-xs font-mono px-2.5 py-1 rounded bg-indigo-100 text-indigo-800 font-semibold">
+            {auditLog.length} Audit Entries
+          </span>
+        </div>
+
+        {auditLog.length === 0 ? (
+          <div className="p-8 text-center text-xs text-slate-500 italic">
+            No rule modifications recorded yet. Default baseline rules active.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-100 text-slate-700 font-semibold uppercase tracking-wider border-b border-slate-200">
+                  <th className="py-2.5 px-4">Timestamp (UTC)</th>
+                  <th className="py-2.5 px-4">Operator</th>
+                  <th className="py-2.5 px-4">Role</th>
+                  <th className="py-2.5 px-4">Rule Target</th>
+                  <th className="py-2.5 px-4">Threshold Change</th>
+                  <th className="py-2.5 px-4">Weight Change</th>
+                  <th className="py-2.5 px-4">Status Change</th>
+                  <th className="py-2.5 px-4">Reason / Notes</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 text-slate-800 font-mono text-[11px]">
+                {auditLog.map((log) => (
+                  <tr key={log.id} className="hover:bg-slate-50">
+                    <td className="py-2.5 px-4 text-slate-500 whitespace-nowrap">
+                      {new Date(log.timestamp).toLocaleString()}
+                    </td>
+                    <td className="py-2.5 px-4 font-sans font-medium text-slate-900">
+                      {log.user_name}
+                    </td>
+                    <td className="py-2.5 px-4 font-sans">
+                      <span className="px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200 text-[10px] font-bold">
+                        {log.user_role}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-4 font-bold text-indigo-700">
+                      {log.rule_id} ({log.rule_name})
+                    </td>
+                    <td className="py-2.5 px-4">
+                      <span className="text-slate-500">{String(log.old_threshold)}</span>
+                      <span className="mx-1 text-slate-400">→</span>
+                      <span className="font-bold text-slate-900">{String(log.new_threshold)}</span>
+                    </td>
+                    <td className="py-2.5 px-4">
+                      <span className="text-slate-500">+{log.old_weight} pts</span>
+                      <span className="mx-1 text-slate-400">→</span>
+                      <span className="font-bold text-red-600">+{log.new_weight} pts</span>
+                    </td>
+                    <td className="py-2.5 px-4">
+                      {log.old_enabled === log.new_enabled ? (
+                        <span className="text-slate-500">{log.new_enabled ? "Enabled" : "Disabled"}</span>
+                      ) : (
+                        <span className="font-bold text-amber-700">
+                          {log.old_enabled ? "Enabled" : "Disabled"} → {log.new_enabled ? "Enabled" : "Disabled"}
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-2.5 px-4 font-sans text-slate-600 text-xs">
+                      {log.change_reason || "Operational recalibration"}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

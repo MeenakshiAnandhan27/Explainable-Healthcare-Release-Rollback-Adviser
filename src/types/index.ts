@@ -181,12 +181,54 @@ export interface ExperimentData {
 export interface StakeholderValidation {
   id: number;
   timestamp: string;
-  stakeholder_name: string;
-  stakeholder_role: string;
-  usability_rating: number;
-  explanation_clarity_rating: number;
-  confidence_rating: number;
-  feedback: string;
+  stakeholder_name?: string;
+  role: string;
+  stakeholder_role?: string;
+  ease_of_use: number;
+  explanation_clarity: number;
+  confidence: number;
+  decision_usefulness: number;
+  evidence_usefulness: number;
+  overall_usability: number;
+  comments: string;
+  feedback?: string;
   suggested_improvement?: string;
-  is_prototype: boolean;
+  is_prototype?: boolean;
+  usability_rating?: number;
+  explanation_clarity_rating?: number;
+  confidence_rating?: number;
+}
+
+export interface RuleAuditRecord {
+  id: number;
+  timestamp: string;
+  rule_id: string;
+  rule_name: string;
+  user_name: string;
+  user_role: string;
+  old_threshold: string | number;
+  new_threshold: string | number;
+  old_weight: number;
+  new_weight: number;
+  old_enabled: boolean;
+  new_enabled: boolean;
+  change_reason?: string;
+}
+
+export interface HospitalAnalytics {
+  hospital_id: string;
+  hospital_name: string;
+  tier: string;
+  total_releases: number;
+  high_risk_count: number;
+  rollback_count: number;
+  avg_risk_score: number;
+  avg_latency_change_percent: number;
+  avg_error_rate_percent: number;
+  customer_impact_distribution: {
+    LOW: number;
+    MEDIUM: number;
+    HIGH: number;
+    CRITICAL: number;
+  };
 }

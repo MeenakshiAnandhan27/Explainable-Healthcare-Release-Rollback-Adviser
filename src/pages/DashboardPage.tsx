@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DashboardStats,
   Hospital,
   Release,
-  UserSession
+  UserSession,
+  HospitalAnalytics
 } from "../types";
 import {
   ResponsiveContainer,
@@ -20,7 +21,8 @@ import {
 } from "recharts";
 import { RiskBadge, ImpactBadge, RiskProgressBar } from "../components/RiskBadge";
 import { AdvisoryBanner } from "../components/AdvisoryBanner";
-import { Download, SlidersHorizontal, ArrowRight, Eye, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Download, SlidersHorizontal, ArrowRight, Eye, ShieldCheck, AlertTriangle, Building2, TrendingUp } from "lucide-react";
+import { fetchMultiHospitalAnalytics } from "../services/api";
 
 interface DashboardPageProps {
   stats: DashboardStats | null;
@@ -39,6 +41,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   onOpenDecision,
   user
 }) => {
+  const [hospitalAnalytics, setHospitalAnalytics] = useState<HospitalAnalytics[]>([]);
+
+  useEffect(() => {
+    fetchMultiHospitalAnalytics()
+      .then(setHospitalAnalytics)
+      .catch((err) => console.error("Error loading multi-hospital analytics:", err));
+  }, []);
+
   if (!stats) {
     return (
       <div className="p-8 text-center text-slate-500">
@@ -192,13 +202,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {/* Avg Decision Time */}
         <div id="metric-card-avg-time" className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Avg. Decision Time
+            Time to Correct Decision
           </div>
           <div className="text-2xl font-bold text-slate-900 mt-1">
             {stats.average_decision_time_min}m
           </div>
-          <div className="text-[10px] text-green-600 font-semibold mt-1">
-            -91.1% from Manual Baseline (48.5m)
+          <div className="text-[10px] text-emerald-600 font-bold mt-1">
+            -88.7% vs Primary Baseline (38.2m)
+          </div>
+          <div className="text-[9px] text-slate-400 mt-0.5">
+            Incident Bridge Baseline: 48.5m
           </div>
         </div>
       </div>
@@ -634,6 +647,87 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Multi-Hospital Comparative Analytics (Phase 2 Requirement 12) */}
+      {hospitalAnalytics && hospitalAnalytics.length > 0 && (
+        <div className="space-y-4 pt-4 border-t border-slate-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-50 border border-indigo-200 text-xs font-bold text-indigo-700 mb-1">
+                <Building2 className="w-3.5 h-3.5" />
+                <span>Multi-Hospital Comparative Analytics</span>
+              </div>
+              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                Cross-Hospital Release Telemetry & Risk Comparison
+              </h3>
+              <p className="text-xs text-slate-500">Comparative risk scores, rollback rates, latency, and error trends across all 5 hospital deployments</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Chart: Average Risk Score by Hospital */}
+            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+                Average Risk Score by Hospital
+              </h4>
+              <p className="text-[11px] text-slate-400 mb-2">Mean risk points across all deployments</p>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={hospitalAnalytics} margin={{ top: 10, right: 10, left: -20, bottom: 25 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                    <XAxis dataKey="hospital_name" tick={{ fontSize: 8 }} interval={0} angle={-20} textAnchor="end" />
+                    <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} />
+                    <Tooltip contentStyle={{ fontSize: 11, borderRadius: 6 }} />
+                    <Bar dataKey="avg_risk_score" fill="#6366f1" radius={[3, 3, 0, 0]} name="Avg Risk Score" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Chart: Rollback Advisories by Hospital */}
+            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+                Rollbacks & High-Risk Releases by Hospital
+              </h4>
+              <p className="text-[11px] text-slate-400 mb-2">High-risk deployments requiring intervention</p>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={hospitalAnalytics} margin={{ top: 10, right: 10, left: -20, bottom: 25 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                    <XAxis dataKey="hospital_name" tick={{ fontSize: 8 }} interval={0} angle={-20} textAnchor="end" />
+                    <YAxis tick={{ fontSize: 10 }} />
+                    <Tooltip contentStyle={{ fontSize: 11, borderRadius: 6 }} />
+                    <Legend wrapperStyle={{ fontSize: 10 }} />
+                    <Bar dataKey="high_risk_count" fill="#f97316" radius={[2, 2, 0, 0]} name="High Risk Count" />
+                    <Bar dataKey="rollback_count" fill="#ef4444" radius={[2, 2, 0, 0]} name="Rollback Advisories" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Chart: Latency & Error Rate Change by Hospital */}
+            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
+                Avg Latency & Error Rate by Hospital
+              </h4>
+              <p className="text-[11px] text-slate-400 mb-2">Technical signal degradation across tenants</p>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={hospitalAnalytics} margin={{ top: 10, right: 10, left: -20, bottom: 25 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                    <XAxis dataKey="hospital_name" tick={{ fontSize: 8 }} interval={0} angle={-20} textAnchor="end" />
+                    <YAxis tick={{ fontSize: 10 }} />
+                    <Tooltip contentStyle={{ fontSize: 11, borderRadius: 6 }} />
+                    <Legend wrapperStyle={{ fontSize: 10 }} />
+                    <Bar dataKey="avg_latency_change_percent" fill="#0284c7" radius={[2, 2, 0, 0]} name="Latency Change %" />
+                    <Bar dataKey="avg_error_rate_percent" fill="#ec4899" radius={[2, 2, 0, 0]} name="Error Rate %" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

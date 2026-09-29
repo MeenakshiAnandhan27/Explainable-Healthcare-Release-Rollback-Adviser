@@ -9,7 +9,13 @@ import {
   CheckSquare,
   BookOpen,
   UserCheck,
-  Shield
+  Shield,
+  GitCompare,
+  AlertTriangle,
+  Bug,
+  Compass,
+  HeartHandshake,
+  CheckCircle2
 } from "lucide-react";
 import { UserSession } from "../types";
 
@@ -17,11 +23,17 @@ export type NavPage =
   | "dashboard"
   | "releases"
   | "release-detail"
+  | "compare"
   | "rules"
   | "experiment"
   | "analysis"
+  | "failure-modes"
+  | "error-analysis"
   | "decisions"
   | "validation"
+  | "walkthrough"
+  | "ethics"
+  | "deployment"
   | "docs";
 
 interface SidebarProps {
@@ -43,13 +55,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "releases", label: "Active Releases", icon: Layers, badge: "512" },
     { id: "release-detail", label: "Advisory Evidence", icon: FileText, badge: selectedReleaseId ? "Active" : undefined },
+    { id: "compare", label: "Compare Releases", icon: GitCompare },
     { id: "rules", label: "Risk Rule Config", icon: Sliders, badge: user.role === "Release Manager" ? "Edit" : undefined }
   ];
 
   const analysisItems: Array<{ id: NavPage; label: string; icon: React.ElementType; badge?: string }> = [
     { id: "experiment", label: "A/B Experiments", icon: FlaskConical },
+    { id: "failure-modes", label: "Failure Modes", icon: AlertTriangle, badge: "6 Tests" },
+    { id: "error-analysis", label: "Error Analysis", icon: Bug },
     { id: "decisions", label: "Audit Logs", icon: History },
-    { id: "validation", label: "Validation Review", icon: CheckSquare },
+    { id: "validation", label: "Validation Review", icon: CheckSquare }
+  ];
+
+  const governanceItems: Array<{ id: NavPage; label: string; icon: React.ElementType; badge?: string }> = [
+    { id: "walkthrough", label: "Usability Walkthrough", icon: Compass, badge: "13 Steps" },
+    { id: "ethics", label: "Ethics & Safety", icon: HeartHandshake },
+    { id: "deployment", label: "Deployment Readiness", icon: CheckCircle2 },
     { id: "docs", label: "Architecture Specs", icon: BookOpen }
   ];
 
@@ -100,12 +121,48 @@ export const Sidebar: React.FC<SidebarProps> = ({
           id="nav-analysis-header"
           onClick={() => onNavigate("experiment")}
           className="pt-4 pb-1 text-[10px] uppercase font-bold text-slate-500 hover:text-slate-300 px-3 py-2 tracking-wider cursor-pointer flex items-center justify-between group transition-colors"
-          title="Analysis: A/B Experiments, Audit Logs, Validation & Specs"
+          title="Analysis: A/B Experiments, Failure Modes, Error Analysis & Validation"
         >
-          <span>Analysis</span>
-          <span className="text-[9px] text-slate-600 group-hover:text-slate-400 font-mono">4 views</span>
+          <span>Analysis & Evaluation</span>
+          <span className="text-[9px] text-slate-600 group-hover:text-slate-400 font-mono">5 views</span>
         </div>
         {analysisItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = currentPage === item.id;
+          return (
+            <button
+              key={item.id}
+              id={`nav-${item.id}`}
+              onClick={() => onNavigate(item.id)}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded text-xs transition-colors cursor-pointer ${
+                isActive
+                  ? "bg-slate-700 text-white font-semibold"
+                  : "text-slate-300 hover:bg-slate-700 hover:text-white"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Icon className={`w-4 h-4 ${isActive ? "text-blue-400" : "text-slate-400"}`} />
+                <span>{item.label}</span>
+              </div>
+              {item.badge && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded font-mono bg-slate-900/60 text-slate-400">
+                  {item.badge}
+                </span>
+              )}
+            </button>
+          );
+        })}
+
+        <div
+          id="nav-governance-header"
+          onClick={() => onNavigate("walkthrough")}
+          className="pt-4 pb-1 text-[10px] uppercase font-bold text-slate-500 hover:text-slate-300 px-3 py-2 tracking-wider cursor-pointer flex items-center justify-between group transition-colors"
+          title="Governance: Usability Walkthrough, Ethics, Deployment & Specs"
+        >
+          <span>Governance & Readiness</span>
+          <span className="text-[9px] text-slate-600 group-hover:text-slate-400 font-mono">4 views</span>
+        </div>
+        {governanceItems.map((item) => {
           const Icon = item.icon;
           const isActive = currentPage === item.id;
           return (
