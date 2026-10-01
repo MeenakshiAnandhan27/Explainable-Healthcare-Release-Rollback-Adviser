@@ -11,19 +11,18 @@
 
 ---
 
-## 1. Project Overview
-The **Explainable Healthcare Release Rollback Adviser** is an enterprise-grade operational decision-support system designed for healthcare software vendors maintaining distributed cloud microservices across independent hospital networks (e.g. Trauma Level 1 centers, specialty cardiac hospitals, community regional clinics).
-
-The platform replaces unstructured engineer intuition with a quantitative, transparent, and auditable release governance pipeline that synthesizes technical telemetry, business impact indicators, and clinical workflow criticality.
+## 1. Project Title
+**Explainable Healthcare Release Rollback Adviser**  
+An enterprise-grade operational decision-support system designed for healthcare software vendors maintaining distributed cloud microservices across independent hospital networks (e.g., Trauma Level 1 centers, cardiac specialty institutes, regional clinics).
 
 ---
 
 ## 2. Problem Statement
-In multi-tenant healthcare software environments, release rollback decisions currently depend heavily on subjective intuition because release risk is not quantified. This causes four acute operational failures:
-1. **Excessive Triage Latency:** Manual war-room triage requires an average of **38.2 minutes** across routine deployments and up to **48.5–63.7 minutes** during complex incidents.
+In multi-tenant healthcare software environments, release rollback decisions currently depend heavily on subjective engineer intuition because release risk is not quantitatively assessed. This causes four acute operational failures:
+1. **Excessive Triage Latency:** Manual triage bridges require an average of **38.2 minutes** across routine deployments and up to **48.5–63.7 minutes** during complex incidents.
 2. **Premature False Rollbacks:** Safe releases are terminated because of harmless background errors or transient cache warm-up latency, delaying critical clinical feature deliveries.
-3. **Catastrophic Missed Rollbacks:** Subtle clinical workflow failures (e.g. ICU medication dispensing queues blocked) slip past monitoring because raw server error rates appear deceptively green (e.g. 0.2%).
-4. **Zero Auditability:** Historical rollbacks lack documented clinical justifications and decision traces.
+3. **Catastrophic Missed Rollbacks:** Subtle clinical workflow failures (e.g., ICU medication dispensing queues blocked) slip past monitoring because raw server error rates appear deceptively green (e.g., 0.2%).
+4. **Zero Auditability:** Historical rollbacks lack documented clinical justifications and immutable decision traces.
 
 ---
 
@@ -38,9 +37,9 @@ In multi-tenant healthcare software environments, release rollback decisions cur
 ---
 
 ## 4. Key Features
-- **Multi-Hospital Telemetry Isolation:** Partitioned monitoring across 5 distinct hospital systems (`HOSP-CGH-01` through `HOSP-GVH-05`).
+- **Multi-Hospital Telemetry Partitioning:** Isolated monitoring across 5 distinct hospital systems (`HOSP-CGH-01` through `HOSP-GVH-05`).
 - **Configurable Deterministic Rules (R1–R6):** Dynamic runtime threshold and weight calibration with server-side RBAC guards.
-- **Explainable Evidence Breakdown:** Granular telemetry inspection comparing observed signals, baselines, and safety thresholds.
+- **Explainable Evidence Breakdown:** Granular telemetry inspection comparing observed signals, baselines, safety thresholds, and point contributions.
 - **Immutable Audit Logging:** Complete audit history capturing operator identity, timestamp, role, recommendation, and override justification.
 - **Rule Modification Change Log:** Captures before/after threshold and weight state for every rule update.
 - **13-Step Usability Walkthrough:** Interactive end-to-end operator tour (`/walkthrough`).
@@ -49,22 +48,7 @@ In multi-tenant healthcare software environments, release rollback decisions cur
 
 ---
 
-## 5. User Roles & RBAC Matrix
-The system enforces strict Role-Based Access Control:
-
-| Capability | SOC / Operations Analyst | Release Manager | Security Enforcement |
-| :--- | :---: | :---: | :--- |
-| **Inspect Release Telemetry & Evidence** | Yes | Yes | Read-only API |
-| **Submit Decision / Authorize Action** | Yes | Yes | Payload identity validation |
-| **Override Adviser Recommendation** | Yes | Yes | **Mandatory $\ge 10$ char justification** |
-| **View Historical Audit Logs** | Yes | Yes | Filterable read-only access |
-| **Reconfigure Risk Rules (R1–R6)** | **DENIED (403 Forbidden)** | **AUTHORIZED (200 OK)** | **Server-side RBAC Guard in `server.ts`** |
-| **Review Rule Change History** | Yes | Yes | Full transparency |
-| **Run Benchmark Experiments** | Yes | Yes | Statistical engine |
-
----
-
-## 6. System Architecture
+## 5. Architecture
 ```
 +---------------------------------------------------------------------------------------------------+
 |                     Explainable Healthcare Release Rollback Adviser Architecture                  |
@@ -91,7 +75,7 @@ Full technical architecture details are available in [`docs/architecture.md`](do
 
 ---
 
-## 7. Technology Stack
+## 6. Technology Stack
 - **Frontend SPA:** React 19, TypeScript, Vite 6, Tailwind CSS v4, Lucide-React, Recharts
 - **Backend API:** Node.js 22, Express 4.21, TypeScript, `tsx`
 - **Testing Suites:** Python 3.10 regression runner (`tests/run_all_tests.py`) + TypeScript runner (`npm test`)
@@ -100,17 +84,33 @@ Full technical architecture details are available in [`docs/architecture.md`](do
 
 ---
 
-## 8. Data Flow
-1. **Telemetry Ingestion:** Real-time metrics (P95 latency ms, error rate %, transaction volume, availability %, and clinical impact) ingested from hospital proxy.
-2. **Sanitization:** Validates telemetry boundaries (rejecting negative latency and error rates $>100\%$).
-3. **Rule Evaluation:** Evaluates active rules R1–R6 against thresholds.
-4. **Scoring:** Bounded summation maps points to `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL` risk tiers.
-5. **Human Authorization:** Operator reviews triggered evidence cards and submits confirmation or justified override.
-6. **Persistence:** Appends immutable decision record to `data/decisions.json`.
+## 7. User Roles & RBAC Matrix
+The system enforces strict Role-Based Access Control:
+
+| Capability | SOC / Operations Analyst | Release Manager | Security Enforcement |
+| :--- | :---: | :---: | :--- |
+| **Inspect Release Telemetry & Evidence** | Yes | Yes | Read-only API |
+| **Submit Decision / Authorize Action** | Yes | Yes | Payload identity validation |
+| **Override Adviser Recommendation** | Yes | Yes | **Mandatory $\ge 10$ char justification** |
+| **View Historical Audit Logs** | Yes | Yes | Filterable read-only access |
+| **Reconfigure Risk Rules (R1–R6)** | **DENIED (403 Forbidden)** | **AUTHORIZED (200 OK)** | **Server-side RBAC Guard in `server.ts`** |
+| **Review Rule Change History** | Yes | Yes | Full transparency |
+| **Run Benchmark Experiments** | Yes | Yes | Statistical engine |
 
 ---
 
-## 9. Risk Rules (R1–R6)
+## 8. Workflow
+The operational workflow proceeds through 6 deterministic stages:
+1. **Telemetry Ingestion:** Real-time metrics (P95 latency ms, error rate %, transaction volume, availability %, and clinical impact) ingested from hospital proxy.
+2. **Schema Sanitization:** Validates telemetry boundaries (rejecting negative latency and error rates $>100\%$).
+3. **Deterministic Rule Evaluation:** Evaluates active rules R1–R6 against configured thresholds.
+4. **Normalized Scoring:** Bounded summation maps points to `LOW` (<30), `MEDIUM` (30–59), `HIGH` (60–79), or `CRITICAL` ($\ge 80$) risk tiers.
+5. **Human Authorization:** Operator reviews triggered evidence cards and submits confirmation or justified override.
+6. **Immutable Audit Persistence:** Appends decision record to `data/decisions.json`.
+
+---
+
+## 9. R1–R6 Rules
 | Rule ID | Rule Name | Category | Metric Inspected | Condition & Threshold | Risk Weight |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **R1** | High Error Rate | Technical | `error_rate_percent` | $> 5.0\%$ | **+30 points** |
@@ -123,18 +123,18 @@ Full technical architecture details are available in [`docs/architecture.md`](do
 ---
 
 ## 10. Explainability
-Every recommendation exposes:
+Every recommendation provides full mathematical transparency:
 - **Numerical Risk Score (0–100):** Capped sum of active triggered rule weights.
 - **Triggered Rule Cards:** Exact observed value, baseline, threshold, and mathematical contribution.
 - **Clinical Narrative Points:** Plain-English summary explaining clinical impact.
-- **Auxiliary Anomaly Indicator:** Statistical Z-score deviation analysis.
+- **Auxiliary Anomaly Indicator:** Statistical Modified Z-score deviation analysis.
 
 ---
 
-## 11. Human-in-the-Loop Workflow
+## 11. Human-in-the-Loop Governance
 - **Advisory Only:** No automatic rollback hooks exist in the codebase.
 - **High-Impact Modal:** Recommendations of `ROLLBACK RECOMMENDED` require interactive operator authorization.
-- **Mandatory Override Justification:** Diverging from the adviser requires a documented reason ($\ge 10$ characters). Empty justifications fail with HTTP 400 Bad Request.
+- **Mandatory Override Justification:** Diverging from the adviser requires a documented reason ($\ge 10$ characters). Empty or trivial justifications fail with HTTP 400 Bad Request.
 
 ---
 
@@ -150,12 +150,12 @@ The application exposes **21 REST API endpoints**. Complete specifications are d
 | **Decisions & Audits** | `POST /api/decisions`, `GET /api/decisions` |
 | **Analytics & KPIs** | `GET /api/dashboard/stats`, `GET /api/analytics/multi-hospital` |
 | **Observability (P3)** | `GET /api/observability/prometheus`, `GET /api/observability/anomaly/:release_id` |
-| **Experiments & Tests**| `GET /api/experiments`, `POST /api/experiment/run`, `POST /api/tests/run` |
+| **Experiments & Tests**| `GET /api/experiments`, `GET /api/experiment/results`, `POST /api/experiment/run`, `POST /api/tests/run` |
 | **Stakeholder Feedback**| `POST /api/validations`, `GET /api/validations` |
 
 ---
 
-## 13. Data & Schema Documentation Summary
+## 13. Data Schema Summary
 All data is stored in structured, schema-validated JSON files in `/data/` and `/rules/`. Complete specifications are documented in [`docs/data_schema.md`](docs/data_schema.md).
 - **`data/releases.json`:** 512 synthetic multi-tenant hospital releases.
 - **`data/decisions.json`:** Human authorization decisions and override justifications.
@@ -226,7 +226,7 @@ Full operational readiness audit available in [`docs/deployment_checklist.md`](d
 
 ---
 
-## 18. Safety & Ethics Governance
+## 18. Ethics and Safety Governance
 - **Advisory System Boundary:** Strictly decision support; zero automated deployment actions.
 - **Clinical Non-Interference:** Release governance only; strictly not for clinical diagnostic/treatment decisions.
 - **Zero Real PHI:** All data is 100% synthetic simulation.
@@ -241,7 +241,7 @@ Full operational readiness audit available in [`docs/deployment_checklist.md`](d
 
 ---
 
-## 20. Phase 3 Additions & Enhancements
+## 20. Phase 3 Improvements
 - **Unit Testing Technical Documentation:** Detailed test specifications and architectures in [`docs/testing.md`](docs/testing.md).
 - **Error Boundary Documentation:** Comprehensive client/server error handling guide in [`docs/error_handling.md`](docs/error_handling.md).
 - **Expanded REST API Reference:** Dedicated reference guide in [`docs/api.md`](docs/api.md).
@@ -251,11 +251,37 @@ Full operational readiness audit available in [`docs/deployment_checklist.md`](d
 - **Simulated Prometheus Exposition:** Metrics endpoint at `/api/observability/prometheus`.
 - **Auxiliary Statistical Anomaly Detection:** Modified Z-score anomaly detector mounted at `/api/observability/anomaly/:id` and visual card on Release Detail view.
 - **Security & RBAC Documentation:** Complete privilege audit guide in [`docs/security.md`](docs/security.md).
+- **React Hook Order Fix:** Fixed conditional hook invocation in `src/pages/DashboardPage.tsx` guaranteeing invariant hook execution order.
 
 ---
 
-## 21. Future Work (Phase 4 Enterprise Roadmap)
-- Enterprise PostgreSQL / Cloud SQL migration with Row-Level Security (RLS).
-- Live OpenTelemetry and Prometheus push connectors for Istio/Envoy service mesh.
-- Enterprise SAML 2.0 / Okta SSO integration.
-- Continuous multi-hospital canary analysis pipelines.
+## 21. How to Run the Project
+### Quickstart (Development Mode)
+```bash
+# Install dependencies
+npm install
+
+# Start development server on port 3000
+npm run dev
+```
+
+### Running Test Suites
+```bash
+# Execute Python 3.10 Master Test Suite (20 tests)
+python3 tests/run_all_tests.py
+
+# Execute TypeScript / Node.js 22 Master Test Suite (20 tests)
+npm test
+```
+
+### Building for Production
+```bash
+# Run TypeScript linter
+npm run lint
+
+# Build production bundle
+npm run build
+
+# Start production server
+npm start
+```

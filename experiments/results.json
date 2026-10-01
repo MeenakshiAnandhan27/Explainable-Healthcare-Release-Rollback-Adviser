@@ -6,14 +6,14 @@
   "metrics": {
     "baseline_avg_decision_time_min": 38.2,
     "baseline_median_decision_time_min": 39.6,
-    "baseline_p25_min": 25.5,
-    "baseline_p75_min": 47.8,
+    "baseline_p25_min": 25.48,
+    "baseline_p75_min": 47.78,
     "incident_subset_baseline_avg_min": 47.1,
-    "target_decision_time_min": 10,
+    "target_decision_time_min": 10.0,
     "measured_avg_decision_time_min": 4.3,
     "measured_median_decision_time_min": 4.3,
-    "measured_p25_min": 3.4,
-    "measured_p75_min": 5,
+    "measured_p25_min": 3.38,
+    "measured_p75_min": 5.0,
     "decision_time_reduction_percent": 88.7,
     "correct_decisions": 57,
     "incorrect_decisions": 2,
@@ -22,9 +22,9 @@
     "false_rollback_count": 2,
     "missed_rollback_count": 0,
     "human_review_count": 21,
-    "accuracy_percent": 95,
+    "accuracy_percent": 95.0,
     "false_rollback_rate_percent": 3.3,
-    "missed_rollback_rate_percent": 0
+    "missed_rollback_rate_percent": 0.0
   },
   "baseline_reconciliation": {
     "primary_baseline_avg_min": 38.2,
@@ -44,26 +44,26 @@
       [
         "Average Decision Time",
         "38.2 mins",
-        "≤ 10.0 mins",
+        "\u2264 10.0 mins",
         "4.3 mins"
       ],
       [
         "Median Decision Time",
         "39.6 mins",
-        "≤ 8.0 mins",
+        "\u2264 8.0 mins",
         "4.3 mins"
       ],
       [
         "P25 Decision Time",
-        "25.5 mins",
-        "—",
-        "3.4 mins"
+        "25.48 mins",
+        "\u2014",
+        "3.38 mins"
       ],
       [
         "P75 Decision Time",
-        "47.8 mins",
-        "—",
-        "5 mins"
+        "47.78 mins",
+        "\u2014",
+        "5.0 mins"
       ],
       [
         "Explainability Availability",
@@ -74,132 +74,30 @@
       [
         "Decision Accuracy",
         "74.0% (Uncalibrated)",
-        "≥ 90.0%",
-        "95%"
+        "\u2265 90.0%",
+        "95.0%"
       ],
       [
         "False Rollback Rate",
         "14.5%",
-        "≤ 6.0%",
+        "\u2264 6.0%",
         "3.3%"
       ],
       [
         "Missed Rollback Rate",
         "11.5%",
-        "≤ 4.0%",
-        "0%"
+        "\u2264 4.0%",
+        "0.0%"
       ],
       [
         "Decision Time Reduction",
         "Baseline (0%)",
-        "≥ 70.0%",
+        "\u2265 70.0%",
         "88.7%"
       ]
     ]
   },
   "error_analysis": [
-    {
-      "release_id": "REL-2026-0014",
-      "hospital_name": "Metro Care Hospital",
-      "application_name": "Laboratory Application",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "High Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0015",
-      "hospital_name": "Green Valley Hospital",
-      "application_name": "Electronic Health Record Service",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "Critical Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0016",
-      "hospital_name": "City General Hospital",
-      "application_name": "Pharmacy Management Service",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "High Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0024",
-      "hospital_name": "Metro Care Hospital",
-      "application_name": "Patient Billing & Scheduling",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "Critical Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0025",
-      "hospital_name": "Green Valley Hospital",
-      "application_name": "Clinical Portal",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "Critical Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0026",
-      "hospital_name": "City General Hospital",
-      "application_name": "Laboratory Application",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "Critical Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
     {
       "release_id": "REL-2026-0028",
       "hospital_name": "Lakeside Hospital",
@@ -215,159 +113,6 @@
       ],
       "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
       "type": "False Rollback"
-    },
-    {
-      "release_id": "REL-2026-0034",
-      "hospital_name": "Metro Care Hospital",
-      "application_name": "Pharmacy Management Service",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "High Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0035",
-      "hospital_name": "Green Valley Hospital",
-      "application_name": "Radiology PACS",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "Critical Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0036",
-      "hospital_name": "City General Hospital",
-      "application_name": "Patient Billing & Scheduling",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "High Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0044",
-      "hospital_name": "Metro Care Hospital",
-      "application_name": "Laboratory Application",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "Critical Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0045",
-      "hospital_name": "Green Valley Hospital",
-      "application_name": "Electronic Health Record Service",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "Critical Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0046",
-      "hospital_name": "City General Hospital",
-      "application_name": "Pharmacy Management Service",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "Critical Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0054",
-      "hospital_name": "Metro Care Hospital",
-      "application_name": "Patient Billing & Scheduling",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "Critical Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0055",
-      "hospital_name": "Green Valley Hospital",
-      "application_name": "Clinical Portal",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "High Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
-    },
-    {
-      "release_id": "REL-2026-0056",
-      "hospital_name": "City General Hospital",
-      "application_name": "Laboratory Application",
-      "expected_decision": "ROLLBACK",
-      "adviser_recommendation": "ROLLBACK RECOMMENDED",
-      "risk_score": 100,
-      "triggered_rules": [
-        "High Error Rate",
-        "Latency Degradation",
-        "Transaction Drop",
-        "High Customer Impact",
-        "Low Service Availability"
-      ],
-      "likely_reason": "Aggressive technical threshold triggered by transient downstream network jitter or non-critical background retry spikes.",
-      "type": "Correct Rollback"
     },
     {
       "release_id": "REL-2026-0057",
@@ -393,7 +138,7 @@
       "ground_truth": "HUMAN REVIEW",
       "recommendation": "HUMAN REVIEW",
       "classification": "Correct Human Review",
-      "baseline_time_min": 54,
+      "baseline_time_min": 54.0,
       "adviser_time_min": 5.5,
       "time_saved_percent": 89.8,
       "risk_score": 30
@@ -405,7 +150,7 @@
       "ground_truth": "HUMAN REVIEW",
       "recommendation": "HUMAN REVIEW",
       "classification": "Correct Human Review",
-      "baseline_time_min": 48,
+      "baseline_time_min": 48.0,
       "adviser_time_min": 4.5,
       "time_saved_percent": 90.6,
       "risk_score": 30
@@ -417,8 +162,8 @@
       "ground_truth": "HUMAN REVIEW",
       "recommendation": "HUMAN REVIEW",
       "classification": "Correct Human Review",
-      "baseline_time_min": 68,
-      "adviser_time_min": 6,
+      "baseline_time_min": 68.0,
+      "adviser_time_min": 6.0,
       "time_saved_percent": 91.2,
       "risk_score": 40
     },
@@ -429,8 +174,8 @@
       "ground_truth": "CONTINUE",
       "recommendation": "CONTINUE",
       "classification": "Correct Continue",
-      "baseline_time_min": 32,
-      "adviser_time_min": 3,
+      "baseline_time_min": 32.0,
+      "adviser_time_min": 3.0,
       "time_saved_percent": 90.6,
       "risk_score": 0
     },
@@ -441,8 +186,8 @@
       "ground_truth": "HUMAN REVIEW",
       "recommendation": "HUMAN REVIEW",
       "classification": "Correct Human Review",
-      "baseline_time_min": 45,
-      "adviser_time_min": 4,
+      "baseline_time_min": 45.0,
+      "adviser_time_min": 4.0,
       "time_saved_percent": 91.1,
       "risk_score": 25
     },
@@ -453,8 +198,8 @@
       "ground_truth": "HUMAN REVIEW",
       "recommendation": "HUMAN REVIEW",
       "classification": "Correct Human Review",
-      "baseline_time_min": 58,
-      "adviser_time_min": 5,
+      "baseline_time_min": 58.0,
+      "adviser_time_min": 5.0,
       "time_saved_percent": 91.4,
       "risk_score": 55
     },
@@ -490,7 +235,7 @@
       "recommendation": "HUMAN REVIEW",
       "classification": "Correct Human Review",
       "baseline_time_min": 41.1,
-      "adviser_time_min": 5,
+      "adviser_time_min": 5.0,
       "time_saved_percent": 87.8,
       "risk_score": 55
     },
@@ -503,7 +248,7 @@
       "classification": "Correct Continue",
       "baseline_time_min": 21.4,
       "adviser_time_min": 3.2,
-      "time_saved_percent": 85,
+      "time_saved_percent": 85.0,
       "risk_score": 0
     },
     {
@@ -575,7 +320,7 @@
       "classification": "Correct Rollback",
       "baseline_time_min": 41.4,
       "adviser_time_min": 6.2,
-      "time_saved_percent": 85,
+      "time_saved_percent": 85.0,
       "risk_score": 100
     },
     {
@@ -609,9 +354,9 @@
       "ground_truth": "HUMAN REVIEW",
       "recommendation": "HUMAN REVIEW",
       "classification": "Correct Human Review",
-      "baseline_time_min": 36,
+      "baseline_time_min": 36.0,
       "adviser_time_min": 3.6,
-      "time_saved_percent": 90,
+      "time_saved_percent": 90.0,
       "risk_score": 30
     },
     {
@@ -670,8 +415,8 @@
       "recommendation": "ROLLBACK RECOMMENDED",
       "classification": "Correct Rollback",
       "baseline_time_min": 45.6,
-      "adviser_time_min": 5,
-      "time_saved_percent": 89,
+      "adviser_time_min": 5.0,
+      "time_saved_percent": 89.0,
       "risk_score": 100
     },
     {
@@ -741,9 +486,9 @@
       "ground_truth": "CONTINUE",
       "recommendation": "CONTINUE",
       "classification": "Correct Continue",
-      "baseline_time_min": 20,
+      "baseline_time_min": 20.0,
       "adviser_time_min": 2.6,
-      "time_saved_percent": 87,
+      "time_saved_percent": 87.0,
       "risk_score": 0
     },
     {
@@ -754,7 +499,7 @@
       "recommendation": "CONTINUE",
       "classification": "Correct Continue",
       "baseline_time_min": 26.3,
-      "adviser_time_min": 3,
+      "adviser_time_min": 3.0,
       "time_saved_percent": 88.6,
       "risk_score": 0
     },
@@ -790,7 +535,7 @@
       "recommendation": "ROLLBACK RECOMMENDED",
       "classification": "Correct Rollback",
       "baseline_time_min": 51.9,
-      "adviser_time_min": 6,
+      "adviser_time_min": 6.0,
       "time_saved_percent": 88.4,
       "risk_score": 100
     },
@@ -814,7 +559,7 @@
       "recommendation": "ROLLBACK RECOMMENDED",
       "classification": "Correct Rollback",
       "baseline_time_min": 50.6,
-      "adviser_time_min": 6,
+      "adviser_time_min": 6.0,
       "time_saved_percent": 88.1,
       "risk_score": 100
     },
@@ -839,7 +584,7 @@
       "classification": "Correct Human Review",
       "baseline_time_min": 34.1,
       "adviser_time_min": 4.1,
-      "time_saved_percent": 88,
+      "time_saved_percent": 88.0,
       "risk_score": 45
     },
     {
@@ -874,7 +619,7 @@
       "recommendation": "CONTINUE",
       "classification": "Correct Continue",
       "baseline_time_min": 22.5,
-      "adviser_time_min": 3,
+      "adviser_time_min": 3.0,
       "time_saved_percent": 86.7,
       "risk_score": 0
     },
@@ -969,7 +714,7 @@
       "ground_truth": "HUMAN REVIEW",
       "recommendation": "HUMAN REVIEW",
       "classification": "Correct Human Review",
-      "baseline_time_min": 36,
+      "baseline_time_min": 36.0,
       "adviser_time_min": 4.6,
       "time_saved_percent": 87.2,
       "risk_score": 45
@@ -993,7 +738,7 @@
       "ground_truth": "CONTINUE",
       "recommendation": "CONTINUE",
       "classification": "Correct Continue",
-      "baseline_time_min": 17,
+      "baseline_time_min": 17.0,
       "adviser_time_min": 3.2,
       "time_saved_percent": 81.2,
       "risk_score": 0
@@ -1055,7 +800,7 @@
       "classification": "Correct Rollback",
       "baseline_time_min": 63.1,
       "adviser_time_min": 5.7,
-      "time_saved_percent": 91,
+      "time_saved_percent": 91.0,
       "risk_score": 100
     },
     {
@@ -1077,9 +822,9 @@
       "ground_truth": "HUMAN REVIEW",
       "recommendation": "HUMAN REVIEW",
       "classification": "Correct Human Review",
-      "baseline_time_min": 43,
+      "baseline_time_min": 43.0,
       "adviser_time_min": 4.3,
-      "time_saved_percent": 90,
+      "time_saved_percent": 90.0,
       "risk_score": 55
     },
     {

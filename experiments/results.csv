@@ -1,61 +1,61 @@
 release_id,hospital_name,application_name,ground_truth,recommendation,classification,risk_score,baseline_time_min,adviser_time_min,time_saved_percent
-"REL-CASE-001","City General Hospital","Clinical Portal","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",30,54,5.5,89.8
-"REL-CASE-002","St. Mary's Medical Center","Laboratory Application","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",30,48,4.5,90.6
-"REL-CASE-003","Metro Care Hospital","Pharmacy Management Service","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",40,68,6,91.2
-"REL-CASE-004","Lakeside Hospital","Radiology PACS","CONTINUE","CONTINUE","Correct Continue",0,32,3,90.6
-"REL-CASE-005","Green Valley Hospital","Patient Billing & Scheduling","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",25,45,4,91.1
-"REL-CASE-006","City General Hospital","Electronic Health Record Service","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",55,58,5,91.4
-"REL-2026-0007","St. Mary's Medical Center","Clinical Portal","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",50,43.3,4.8,88.9
-"REL-2026-0008","Lakeside Hospital","Laboratory Application","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",55,41.9,4.7,88.8
-"REL-2026-0009","Metro Care Hospital","Electronic Health Record Service","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",55,41.1,5,87.8
-"REL-2026-0010","Green Valley Hospital","Pharmacy Management Service","CONTINUE","CONTINUE","Correct Continue",0,21.4,3.2,85
-"REL-2026-0011","City General Hospital","Radiology PACS","CONTINUE","CONTINUE","Correct Continue",0,25.1,3.3,86.9
-"REL-2026-0012","St. Mary's Medical Center","Patient Billing & Scheduling","CONTINUE","CONTINUE","Correct Continue",0,28.5,3.5,87.7
-"REL-2026-0013","Lakeside Hospital","Clinical Portal","CONTINUE","CONTINUE","Correct Continue",0,17.4,2.6,85.1
-"REL-2026-0014","Metro Care Hospital","Laboratory Application","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,55.8,5.3,90.5
-"REL-2026-0015","Green Valley Hospital","Electronic Health Record Service","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,59.5,5.3,91.1
-"REL-2026-0016","City General Hospital","Pharmacy Management Service","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,41.4,6.2,85
-"REL-2026-0017","St. Mary's Medical Center","Radiology PACS","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",55,43.8,4.1,90.6
-"REL-2026-0018","Lakeside Hospital","Patient Billing & Scheduling","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",30,36.5,4.9,86.6
-"REL-2026-0019","Metro Care Hospital","Clinical Portal","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",30,36,3.6,90
-"REL-2026-0020","Green Valley Hospital","Laboratory Application","CONTINUE","CONTINUE","Correct Continue",0,18.1,2.8,84.5
-"REL-2026-0021","City General Hospital","Electronic Health Record Service","CONTINUE","CONTINUE","Correct Continue",0,19.1,3.1,83.8
-"REL-2026-0022","St. Mary's Medical Center","Pharmacy Management Service","CONTINUE","CONTINUE","Correct Continue",0,18.8,2.8,85.1
-"REL-2026-0023","Lakeside Hospital","Radiology PACS","CONTINUE","CONTINUE","Correct Continue",0,18.7,3.4,81.8
-"REL-2026-0024","Metro Care Hospital","Patient Billing & Scheduling","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,45.6,5,89
-"REL-2026-0025","Green Valley Hospital","Clinical Portal","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,46.7,5.1,89.1
-"REL-2026-0026","City General Hospital","Laboratory Application","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,44.8,5.6,87.5
-"REL-2026-0027","St. Mary's Medical Center","Electronic Health Record Service","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",30,41.5,3.7,91.1
-"REL-2026-0028","Lakeside Hospital","Pharmacy Management Service","HUMAN REVIEW","ROLLBACK RECOMMENDED","False Rollback",100,36.3,3.9,89.3
-"REL-2026-0029","Metro Care Hospital","Radiology PACS","HUMAN REVIEW","CONTINUE","Human Review Deviation",0,37.1,4.7,87.3
-"REL-2026-0030","Green Valley Hospital","Patient Billing & Scheduling","CONTINUE","CONTINUE","Correct Continue",0,20,2.6,87
-"REL-2026-0031","City General Hospital","Clinical Portal","CONTINUE","CONTINUE","Correct Continue",0,26.3,3,88.6
-"REL-2026-0032","St. Mary's Medical Center","Laboratory Application","CONTINUE","CONTINUE","Correct Continue",0,26.4,2.8,89.4
-"REL-2026-0033","Lakeside Hospital","Electronic Health Record Service","CONTINUE","CONTINUE","Correct Continue",0,25.6,3.9,84.8
-"REL-2026-0034","Metro Care Hospital","Pharmacy Management Service","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,51.9,6,88.4
-"REL-2026-0035","Green Valley Hospital","Radiology PACS","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,49.6,5.6,88.7
-"REL-2026-0036","City General Hospital","Patient Billing & Scheduling","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,50.6,6,88.1
-"REL-2026-0037","St. Mary's Medical Center","Clinical Portal","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",50,44.6,4.3,90.4
-"REL-2026-0038","Lakeside Hospital","Laboratory Application","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",45,34.1,4.1,88
-"REL-2026-0039","Metro Care Hospital","Electronic Health Record Service","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",55,44.4,4.8,89.2
-"REL-2026-0040","Green Valley Hospital","Pharmacy Management Service","CONTINUE","CONTINUE","Correct Continue",0,22.6,2.7,88.1
-"REL-2026-0041","City General Hospital","Radiology PACS","CONTINUE","CONTINUE","Correct Continue",0,22.5,3,86.7
-"REL-2026-0042","St. Mary's Medical Center","Patient Billing & Scheduling","CONTINUE","CONTINUE","Correct Continue",0,26.7,3.9,85.4
-"REL-2026-0043","Lakeside Hospital","Clinical Portal","CONTINUE","CONTINUE","Correct Continue",0,29.6,3.6,87.8
-"REL-2026-0044","Metro Care Hospital","Laboratory Application","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,59.7,5.5,90.8
-"REL-2026-0045","Green Valley Hospital","Electronic Health Record Service","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,54.7,6.1,88.8
-"REL-2026-0046","City General Hospital","Pharmacy Management Service","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,60.4,4.6,92.4
-"REL-2026-0047","St. Mary's Medical Center","Radiology PACS","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",30,41.4,4.3,89.6
-"REL-2026-0048","Lakeside Hospital","Patient Billing & Scheduling","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",30,37.7,4.4,88.3
-"REL-2026-0049","Metro Care Hospital","Clinical Portal","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",45,36,4.6,87.2
-"REL-2026-0050","Green Valley Hospital","Laboratory Application","CONTINUE","CONTINUE","Correct Continue",0,23.8,3.5,85.3
-"REL-2026-0051","City General Hospital","Electronic Health Record Service","CONTINUE","CONTINUE","Correct Continue",0,17,3.2,81.2
-"REL-2026-0052","St. Mary's Medical Center","Pharmacy Management Service","CONTINUE","CONTINUE","Correct Continue",0,21.4,3.9,81.8
-"REL-2026-0053","Lakeside Hospital","Radiology PACS","CONTINUE","CONTINUE","Correct Continue",0,19.5,3.3,83.1
-"REL-2026-0054","Metro Care Hospital","Patient Billing & Scheduling","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,58.2,5.6,90.4
-"REL-2026-0055","Green Valley Hospital","Clinical Portal","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,50.9,4.8,90.6
-"REL-2026-0056","City General Hospital","Laboratory Application","ROLLBACK","ROLLBACK RECOMMENDED","Correct Rollback",100,63.1,5.7,91
-"REL-2026-0057","St. Mary's Medical Center","Electronic Health Record Service","HUMAN REVIEW","ROLLBACK RECOMMENDED","False Rollback",85,38.1,4.5,88.2
-"REL-2026-0058","Lakeside Hospital","Pharmacy Management Service","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",55,43,4.3,90
-"REL-2026-0059","Metro Care Hospital","Radiology PACS","HUMAN REVIEW","HUMAN REVIEW","Correct Human Review",25,47.7,4.4,90.8
-"REL-2026-0060","Green Valley Hospital","Patient Billing & Scheduling","CONTINUE","CONTINUE","Correct Continue",0,21.1,2.9,86.3
+REL-CASE-001,City General Hospital,Clinical Portal,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,30,54.0,5.5,89.8
+REL-CASE-002,St. Mary's Medical Center,Laboratory Application,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,30,48.0,4.5,90.6
+REL-CASE-003,Metro Care Hospital,Pharmacy Management Service,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,40,68.0,6.0,91.2
+REL-CASE-004,Lakeside Hospital,Radiology PACS,CONTINUE,CONTINUE,Correct Continue,0,32.0,3.0,90.6
+REL-CASE-005,Green Valley Hospital,Patient Billing & Scheduling,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,25,45.0,4.0,91.1
+REL-CASE-006,City General Hospital,Electronic Health Record Service,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,55,58.0,5.0,91.4
+REL-2026-0007,St. Mary's Medical Center,Clinical Portal,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,50,43.3,4.8,88.9
+REL-2026-0008,Lakeside Hospital,Laboratory Application,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,55,41.9,4.7,88.8
+REL-2026-0009,Metro Care Hospital,Electronic Health Record Service,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,55,41.1,5.0,87.8
+REL-2026-0010,Green Valley Hospital,Pharmacy Management Service,CONTINUE,CONTINUE,Correct Continue,0,21.4,3.2,85.0
+REL-2026-0011,City General Hospital,Radiology PACS,CONTINUE,CONTINUE,Correct Continue,0,25.1,3.3,86.9
+REL-2026-0012,St. Mary's Medical Center,Patient Billing & Scheduling,CONTINUE,CONTINUE,Correct Continue,0,28.5,3.5,87.7
+REL-2026-0013,Lakeside Hospital,Clinical Portal,CONTINUE,CONTINUE,Correct Continue,0,17.4,2.6,85.1
+REL-2026-0014,Metro Care Hospital,Laboratory Application,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,55.8,5.3,90.5
+REL-2026-0015,Green Valley Hospital,Electronic Health Record Service,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,59.5,5.3,91.1
+REL-2026-0016,City General Hospital,Pharmacy Management Service,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,41.4,6.2,85.0
+REL-2026-0017,St. Mary's Medical Center,Radiology PACS,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,55,43.8,4.1,90.6
+REL-2026-0018,Lakeside Hospital,Patient Billing & Scheduling,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,30,36.5,4.9,86.6
+REL-2026-0019,Metro Care Hospital,Clinical Portal,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,30,36.0,3.6,90.0
+REL-2026-0020,Green Valley Hospital,Laboratory Application,CONTINUE,CONTINUE,Correct Continue,0,18.1,2.8,84.5
+REL-2026-0021,City General Hospital,Electronic Health Record Service,CONTINUE,CONTINUE,Correct Continue,0,19.1,3.1,83.8
+REL-2026-0022,St. Mary's Medical Center,Pharmacy Management Service,CONTINUE,CONTINUE,Correct Continue,0,18.8,2.8,85.1
+REL-2026-0023,Lakeside Hospital,Radiology PACS,CONTINUE,CONTINUE,Correct Continue,0,18.7,3.4,81.8
+REL-2026-0024,Metro Care Hospital,Patient Billing & Scheduling,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,45.6,5.0,89.0
+REL-2026-0025,Green Valley Hospital,Clinical Portal,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,46.7,5.1,89.1
+REL-2026-0026,City General Hospital,Laboratory Application,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,44.8,5.6,87.5
+REL-2026-0027,St. Mary's Medical Center,Electronic Health Record Service,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,30,41.5,3.7,91.1
+REL-2026-0028,Lakeside Hospital,Pharmacy Management Service,HUMAN REVIEW,ROLLBACK RECOMMENDED,False Rollback,100,36.3,3.9,89.3
+REL-2026-0029,Metro Care Hospital,Radiology PACS,HUMAN REVIEW,CONTINUE,Human Review Deviation,0,37.1,4.7,87.3
+REL-2026-0030,Green Valley Hospital,Patient Billing & Scheduling,CONTINUE,CONTINUE,Correct Continue,0,20.0,2.6,87.0
+REL-2026-0031,City General Hospital,Clinical Portal,CONTINUE,CONTINUE,Correct Continue,0,26.3,3.0,88.6
+REL-2026-0032,St. Mary's Medical Center,Laboratory Application,CONTINUE,CONTINUE,Correct Continue,0,26.4,2.8,89.4
+REL-2026-0033,Lakeside Hospital,Electronic Health Record Service,CONTINUE,CONTINUE,Correct Continue,0,25.6,3.9,84.8
+REL-2026-0034,Metro Care Hospital,Pharmacy Management Service,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,51.9,6.0,88.4
+REL-2026-0035,Green Valley Hospital,Radiology PACS,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,49.6,5.6,88.7
+REL-2026-0036,City General Hospital,Patient Billing & Scheduling,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,50.6,6.0,88.1
+REL-2026-0037,St. Mary's Medical Center,Clinical Portal,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,50,44.6,4.3,90.4
+REL-2026-0038,Lakeside Hospital,Laboratory Application,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,45,34.1,4.1,88.0
+REL-2026-0039,Metro Care Hospital,Electronic Health Record Service,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,55,44.4,4.8,89.2
+REL-2026-0040,Green Valley Hospital,Pharmacy Management Service,CONTINUE,CONTINUE,Correct Continue,0,22.6,2.7,88.1
+REL-2026-0041,City General Hospital,Radiology PACS,CONTINUE,CONTINUE,Correct Continue,0,22.5,3.0,86.7
+REL-2026-0042,St. Mary's Medical Center,Patient Billing & Scheduling,CONTINUE,CONTINUE,Correct Continue,0,26.7,3.9,85.4
+REL-2026-0043,Lakeside Hospital,Clinical Portal,CONTINUE,CONTINUE,Correct Continue,0,29.6,3.6,87.8
+REL-2026-0044,Metro Care Hospital,Laboratory Application,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,59.7,5.5,90.8
+REL-2026-0045,Green Valley Hospital,Electronic Health Record Service,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,54.7,6.1,88.8
+REL-2026-0046,City General Hospital,Pharmacy Management Service,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,60.4,4.6,92.4
+REL-2026-0047,St. Mary's Medical Center,Radiology PACS,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,30,41.4,4.3,89.6
+REL-2026-0048,Lakeside Hospital,Patient Billing & Scheduling,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,30,37.7,4.4,88.3
+REL-2026-0049,Metro Care Hospital,Clinical Portal,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,45,36.0,4.6,87.2
+REL-2026-0050,Green Valley Hospital,Laboratory Application,CONTINUE,CONTINUE,Correct Continue,0,23.8,3.5,85.3
+REL-2026-0051,City General Hospital,Electronic Health Record Service,CONTINUE,CONTINUE,Correct Continue,0,17.0,3.2,81.2
+REL-2026-0052,St. Mary's Medical Center,Pharmacy Management Service,CONTINUE,CONTINUE,Correct Continue,0,21.4,3.9,81.8
+REL-2026-0053,Lakeside Hospital,Radiology PACS,CONTINUE,CONTINUE,Correct Continue,0,19.5,3.3,83.1
+REL-2026-0054,Metro Care Hospital,Patient Billing & Scheduling,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,58.2,5.6,90.4
+REL-2026-0055,Green Valley Hospital,Clinical Portal,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,50.9,4.8,90.6
+REL-2026-0056,City General Hospital,Laboratory Application,ROLLBACK,ROLLBACK RECOMMENDED,Correct Rollback,100,63.1,5.7,91.0
+REL-2026-0057,St. Mary's Medical Center,Electronic Health Record Service,HUMAN REVIEW,ROLLBACK RECOMMENDED,False Rollback,85,38.1,4.5,88.2
+REL-2026-0058,Lakeside Hospital,Pharmacy Management Service,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,55,43.0,4.3,90.0
+REL-2026-0059,Metro Care Hospital,Radiology PACS,HUMAN REVIEW,HUMAN REVIEW,Correct Human Review,25,47.7,4.4,90.8
+REL-2026-0060,Green Valley Hospital,Patient Billing & Scheduling,CONTINUE,CONTINUE,Correct Continue,0,21.1,2.9,86.3

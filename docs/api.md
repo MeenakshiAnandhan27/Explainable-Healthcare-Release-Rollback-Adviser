@@ -38,7 +38,9 @@ For state-mutating rule endpoints (`PUT /api/rules/:rule_id`), the server checks
 | `GET` | `/api/experiments` | Get benchmark experiment metrics & scenario results | Any |
 | `GET` | `/api/experiment/results` | Fetch or compute benchmark experiment metrics | Any |
 | `POST` | `/api/experiment/run` | Execute reproducible benchmark experiment (Seed 42) | Any |
-| `POST` | `/api/tests/run` | Execute / query status of 19 regression tests | Any |
+| `POST` | `/api/tests/run` | Execute / query status of 20 regression tests | Any |
+| `GET` | `/api/observability/prometheus` | Prometheus exposition text format metric scraper | Any |
+| `GET` | `/api/observability/anomaly/:release_id` | Statistical Modified Z-Score anomaly indicator | Any |
 | `POST` | `/api/validations` | Submit authentic stakeholder review feedback | Any |
 | `GET` | `/api/validations` | Fetch all submitted stakeholder reviews | Any |
 
@@ -443,15 +445,15 @@ For state-mutating rule endpoints (`PUT /api/rules/:rule_id`), the server checks
 ---
 
 ### 16. `POST /api/tests/run`
-- **Purpose:** Execute or query the status of all 19 automated regression tests.
+- **Purpose:** Execute or query the status of all 20 automated regression tests.
 - **Role Requirement:** Any
 - **Status Codes:** `200 OK`
 - **Example Response:**
 ```json
 {
   "status": "success",
-  "total_tests": 19,
-  "passed": 19,
+  "total_tests": 20,
+  "passed": 20,
   "failed": 0,
   "test_framework": "TypeScript / Node.js 22 + Python 3.10",
   "results": [
@@ -466,3 +468,34 @@ For state-mutating rule endpoints (`PUT /api/rules/:rule_id`), the server checks
 - **Purpose:** Submit or list authentic stakeholder feedback ratings (1–5) and operational suggestions.
 - **Role Requirement:** Any
 - **Status Codes:** `200 OK`
+
+---
+
+### 18. `GET /api/observability/prometheus`
+- **Purpose:** Prometheus standard text exposition format metric endpoint (`# HELP`, `# TYPE`) for production APM scraping.
+- **Role Requirement:** Any
+- **Status Codes:** `200 OK`
+- **Content-Type:** `text/plain; version=0.0.4; charset=utf-8`
+- **Example Metrics:**
+  - `rollback_adviser_releases_total`: Total managed hospital releases
+  - `rollback_adviser_risk_score_gauge`: Real-time evaluated risk score
+  - `rollback_adviser_decision_latency_seconds`: Decision evaluation latency
+
+---
+
+### 19. `GET /api/observability/anomaly/:release_id`
+- **Purpose:** Auxiliary statistical anomaly indicator calculating Modified Z-Scores across latency, error rate, and throughput deltas.
+- **Role Requirement:** Any
+- **Status Codes:** `200 OK`, `404 Not Found`
+- **Notice:** Advisory and auxiliary only — does not supersede deterministic R1–R6 scoring.
+- **Example Response:**
+```json
+{
+  "release_id": "REL-CASE-001",
+  "is_anomaly": true,
+  "composite_z_score": 3.42,
+  "confidence": "HIGH",
+  "anomalous_features": ["latency_change_percent"],
+  "advisory_note": "Auxiliary statistical indicator only. Deterministic R1-R6 rules remain authoritative."
+}
+```
