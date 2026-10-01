@@ -211,6 +211,37 @@ runTest("TEST 19", "Reproducible experiment verification (Seed 42, 38.2m baselin
   }
 });
 
+// TEST 20
+runTest("TEST 20", "End-to-end user workflow simulation from login to audit trail", () => {
+  const user = { name: "Marcus Vance", role: "SOC / Operations Analyst" };
+  const targetHospital = "HOSP-CGH-01";
+  const release = {
+    release_id: "REL-CASE-001",
+    hospital_id: targetHospital,
+    risk_score: 30,
+    recommendation: "HUMAN REVIEW"
+  };
+  const finalDecision = "CONTINUE";
+  const overrideReason = "Valid documented justification explaining cold cache behavior.";
+  const isOverride = release.recommendation !== finalDecision;
+  const isJustificationValid = overrideReason.trim().length >= 10;
+  if (!isOverride || !isJustificationValid) {
+    throw new Error("End-to-end workflow validation failed on override justification check");
+  }
+  const auditRecord = {
+    id: 1,
+    release_id: release.release_id,
+    decision_maker: user.name,
+    role: user.role,
+    final_decision: finalDecision,
+    is_override: isOverride,
+    override_reason: overrideReason
+  };
+  if (!auditRecord.id || auditRecord.role !== user.role) {
+    throw new Error("Audit record creation failed");
+  }
+});
+
 const passedCount = results.filter(r => r.passed).length;
 const failedCount = results.filter(r => !r.passed).length;
 

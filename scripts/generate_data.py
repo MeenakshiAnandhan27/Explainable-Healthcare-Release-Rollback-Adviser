@@ -522,9 +522,9 @@ def generate_full_dataset(total_count=512):
     return records
 
 
-def save_dataset(records):
-    os.makedirs(DATA_DIR, exist_ok=True)
-    with open(RELEASES_FILE, "w", encoding="utf-8") as f:
+def save_dataset(records, output_json=RELEASES_FILE, output_csv=CSV_FILE):
+    os.makedirs(os.path.dirname(output_json), exist_ok=True)
+    with open(output_json, "w", encoding="utf-8") as f:
         json.dump(records, f, indent=2)
 
     # Also save CSV summary
@@ -536,17 +536,26 @@ def save_dataset(records):
         "risk_score", "risk_level", "recommendation", "ground_truth_decision",
         "baseline_decision_time_min", "adviser_decision_time_min"
     ]
-    with open(CSV_FILE, "w", newline="", encoding="utf-8") as f:
+    with open(output_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         for r in records:
             writer.writerow(r)
 
     print(f"Generated {len(records)} synthetic release records.")
-    print(f"JSON Export: {RELEASES_FILE}")
-    print(f"CSV Export:  {CSV_FILE}")
+    print(f"JSON Export: {output_json}")
+    print(f"CSV Export:  {output_csv}")
 
 
 if __name__ == "__main__":
-    data = generate_full_dataset(512)
-    save_dataset(data)
+    import argparse
+    parser = argparse.ArgumentParser(description="Generate synthetic multi-tenant hospital release telemetry dataset.")
+    parser.add_argument("--count", type=int, default=512, help="Total number of release records to generate (default: 512)")
+    parser.add_argument("--seed", type=int, default=RANDOM_SEED, help="Random seed for reproducibility (default: 42)")
+    parser.add_argument("--out", type=str, default=RELEASES_FILE, help="Output JSON path (default: data/releases.json)")
+    parser.add_argument("--csv", type=str, default=CSV_FILE, help="Output CSV path (default: data/release_signals.csv)")
+    args = parser.parse_args()
+
+    random.seed(args.seed)
+    data = generate_full_dataset(args.count)
+    save_dataset(data, output_json=args.out, output_csv=args.csv)

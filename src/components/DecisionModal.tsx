@@ -58,8 +58,8 @@ export const DecisionModal: React.FC<DecisionModalProps> = ({
       return;
     }
 
-    if (isOverride && !overrideReason.trim()) {
-      setErrorMsg("Override reason is mandatory when your decision differs from the adviser recommendation.");
+    if (isOverride && (!overrideReason.trim() || overrideReason.trim().length < 10)) {
+      setErrorMsg("A documented override reason of at least 10 characters is mandatory when differing from the recommendation.");
       return;
     }
 

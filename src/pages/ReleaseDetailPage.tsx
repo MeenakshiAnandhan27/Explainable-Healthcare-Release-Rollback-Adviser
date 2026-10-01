@@ -12,10 +12,13 @@ import {
   Check,
   TrendingDown,
   TrendingUp,
-  AlertTriangle
+  AlertTriangle,
+  Sparkles,
+  ShieldCheck
 } from "lucide-react";
 import { RiskBadge, ImpactBadge, RiskProgressBar } from "../components/RiskBadge";
 import { AdvisoryBanner } from "../components/AdvisoryBanner";
+import { analyzeAuxiliaryAnomaly } from "../services/observability";
 
 interface ReleaseDetailPageProps {
   releaseId: string;
@@ -535,6 +538,72 @@ export const ReleaseDetailPage: React.FC<ReleaseDetailPageProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Auxiliary Statistical Anomaly Indicator (Non-Authoritative Supporting Feature) */}
+      {(() => {
+        const anomaly = analyzeAuxiliaryAnomaly(release);
+        return (
+          <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${anomaly.is_anomalous ? "bg-amber-100 text-amber-700" : "bg-blue-50 text-blue-600"}`}>
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    Auxiliary Telemetry Anomaly Indicator
+                    <span className="text-[10px] font-normal px-2 py-0.5 bg-slate-100 text-slate-600 rounded">
+                      Phase 3 Supporting Feature
+                    </span>
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Modified Z-Score statistical anomaly detection across multi-dimensional telemetry envelopes
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                  anomaly.is_anomalous ? "bg-amber-100 text-amber-800 border border-amber-300" : "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                }`}>
+                  {anomaly.is_anomalous ? "ANOMALOUS TELEMETRY" : "NOMINAL TELEMETRY"}
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Anomaly Score</span>
+                <span className="font-mono font-bold text-slate-900 text-base mt-0.5 block">{anomaly.anomaly_score} / 1.00</span>
+                <span className="text-[10px] text-slate-500">Statistical deviation index</span>
+              </div>
+              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Statistical Confidence</span>
+                <span className="font-mono font-bold text-slate-900 text-base mt-0.5 block">{(anomaly.confidence * 100).toFixed(0)}%</span>
+                <span className="text-[10px] text-slate-500">Envelope sample stability</span>
+              </div>
+              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Detected Patterns</span>
+                <span className="font-mono font-bold text-slate-900 text-xs mt-1 block truncate">
+                  {anomaly.detected_signals.length > 0 ? anomaly.detected_signals.join(", ") : "None (Within Variance)"}
+                </span>
+                <span className="text-[10px] text-slate-500">Active telemetry anomalies</span>
+              </div>
+            </div>
+
+            <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-700">
+              <span className="font-semibold text-slate-800 block mb-1">Statistical Rationale:</span>
+              <p className="leading-relaxed text-slate-600">{anomaly.rationale}</p>
+            </div>
+
+            <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-2 text-[11px] text-blue-900">
+              <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+              <span>
+                <strong>Governance Notice:</strong> {anomaly.advisory_notice}
+              </span>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Release Metadata Card */}
       <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">

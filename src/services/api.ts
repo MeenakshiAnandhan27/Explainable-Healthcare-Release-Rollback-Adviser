@@ -176,11 +176,19 @@ export async function fetchValidations(): Promise<StakeholderValidation[]> {
 
 export async function submitValidation(feedback: {
   stakeholder_name: string;
-  stakeholder_role: string;
-  usability_rating: number;
-  explanation_clarity_rating: number;
-  confidence_rating: number;
-  feedback: string;
+  role: string;
+  stakeholder_role?: string;
+  ease_of_use?: number;
+  explanation_clarity?: number;
+  confidence?: number;
+  decision_usefulness?: number;
+  evidence_usefulness?: number;
+  overall_usability?: number;
+  usability_rating?: number;
+  explanation_clarity_rating?: number;
+  confidence_rating?: number;
+  comments?: string;
+  feedback?: string;
   suggested_improvement?: string;
 }): Promise<any> {
   const res = await fetch(`${BASE_URL}/validations`, {

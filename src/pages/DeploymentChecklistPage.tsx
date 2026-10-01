@@ -213,8 +213,8 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
   {
     id: "val-2",
     category: "VALIDATION",
-    label: "15 automated executable regression tests passed",
-    description: "Tests 1-15 verified in tests/run_all_tests.py and tests/run_all_tests.ts.",
+    label: "20 automated executable regression tests passed",
+    description: "Tests 1-20 verified in tests/run_all_tests.py and tests/run_all_tests.ts.",
     isImplemented: true,
     prototypeStatus: "IMPLEMENTED"
   },
@@ -288,8 +288,8 @@ export const DeploymentChecklistPage: React.FC = () => {
             <div className="h-10 w-[1px] bg-slate-200" />
             <div>
               <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Readiness Level</div>
-              <div className="text-base font-bold text-emerald-600">Phase 2 Engineering Prototype</div>
-              <div className="text-[10px] text-slate-500">15/15 Regression Tests Passing</div>
+              <div className="text-base font-bold text-emerald-600">Phase 3 Engineering Prototype</div>
+              <div className="text-[10px] text-slate-500">20/20 Regression Tests Passing</div>
             </div>
           </div>
         </div>

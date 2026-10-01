@@ -15,7 +15,8 @@ import {
   Bug,
   Compass,
   HeartHandshake,
-  CheckCircle2
+  CheckCircle2,
+  Activity
 } from "lucide-react";
 import { UserSession } from "../types";
 
@@ -79,6 +80,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id="app-sidebar"
       className="w-64 bg-slate-800 text-slate-300 flex flex-col border-r border-slate-700 shrink-0 select-none h-full overflow-hidden"
     >
+      {/* Brand Header */}
+      <div className="p-4 border-b border-slate-700/80 flex items-center gap-3 bg-slate-850">
+        <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white shadow-sm ring-1 ring-blue-400/40 shrink-0">
+          <Activity className="w-4 h-4 text-white" />
+        </div>
+        <div className="min-w-0">
+          <div className="text-xs font-bold text-white tracking-tight leading-tight truncate">
+            Healthcare Rollback
+          </div>
+          <div className="text-[10px] text-slate-400 font-mono truncate">
+            Adviser v3.0 • SOC Edition
+          </div>
+        </div>
+      </div>
+
       {/* Navigation Links */}
       <nav className="p-4 space-y-1 flex-1 overflow-y-auto">
         <div className="text-[10px] uppercase font-bold text-slate-500 px-3 py-2 tracking-wider">

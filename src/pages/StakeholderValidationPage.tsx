@@ -70,31 +70,20 @@ export const StakeholderValidationPage: React.FC<StakeholderValidationPageProps>
     try {
       await submitValidation({
         stakeholder_name: name.trim() || "Anonymous Stakeholder",
+        role,
         stakeholder_role: role,
+        ease_of_use: easeOfUse,
+        explanation_clarity: explanationClarity,
+        confidence,
+        decision_usefulness: decisionUsefulness,
+        evidence_usefulness: evidenceUsefulness,
+        overall_usability: overallUsability,
         usability_rating: overallUsability,
         explanation_clarity_rating: explanationClarity,
         confidence_rating: confidence,
+        comments: comments.trim(),
         feedback: comments.trim(),
         suggested_improvement: ""
-      });
-
-      // Also persist to API with all Phase 2 fields
-      await fetch("/api/validations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          stakeholder_name: name.trim() || "Anonymous Stakeholder",
-          role,
-          stakeholder_role: role,
-          ease_of_use: easeOfUse,
-          explanation_clarity: explanationClarity,
-          confidence,
-          decision_usefulness: decisionUsefulness,
-          evidence_usefulness: evidenceUsefulness,
-          overall_usability: overallUsability,
-          comments: comments.trim(),
-          feedback: comments.trim()
-        })
       });
 
       setSuccessMsg("Stakeholder validation feedback recorded successfully!");

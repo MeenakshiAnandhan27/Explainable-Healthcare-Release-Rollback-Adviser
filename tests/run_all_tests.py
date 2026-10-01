@@ -54,11 +54,12 @@ from tests.test_data_validation import (
     test_14_duplicate_release_ids_are_rejected
 )
 from tests.test_experiment import test_reproducible_experiment_and_metrics
+from tests.test_end_to_end import test_20_end_to_end_user_journey_workflow
 
 
 def run_all():
     print("\n" + "=" * 76)
-    print("  EXPLAINABLE HEALTHCARE RELEASE ROLLBACK ADVISER - PHASE 2 TEST SUITE")
+    print("  EXPLAINABLE HEALTHCARE RELEASE ROLLBACK ADVISER - TEST SUITE")
     print("=" * 76 + "\n")
 
     tests = [
@@ -81,6 +82,7 @@ def run_all():
         ("TEST 17", "Configured threshold changes actually alter risk evaluation", test_17_configured_threshold_changes_actually_change_evaluation),
         ("TEST 18", "Explanation evidence precisely matches all triggered rules", test_18_explanation_matches_triggered_rules),
         ("TEST 19", "Reproducible experiment verification (Seed 42, 38.2m baseline)", test_reproducible_experiment_and_metrics),
+        ("TEST 20", "End-to-end user workflow simulation from login to audit trail", test_20_end_to_end_user_journey_workflow),
     ]
 
     passed = 0

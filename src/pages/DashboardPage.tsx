@@ -42,12 +42,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   user
 }) => {
   const [hospitalAnalytics, setHospitalAnalytics] = useState<HospitalAnalytics[]>([]);
+  const [highlightedId, setHighlightedId] = useState<string>("REL-CASE-001");
+  const [overrideText, setOverrideText] = useState("");
 
   useEffect(() => {
     fetchMultiHospitalAnalytics()
       .then(setHospitalAnalytics)
       .catch((err) => console.error("Error loading multi-hospital analytics:", err));
   }, []);
+
+  useEffect(() => {
+    if (stats?.recent_alerts?.[0]?.release_id) {
+      setHighlightedId(stats.recent_alerts[0].release_id);
+    }
+  }, [stats]);
 
   if (!stats) {
     return (
@@ -57,12 +65,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       </div>
     );
   }
-
-  // Currently highlighted release for the dark Advisory Detail sidecard
-  const [highlightedId, setHighlightedId] = useState<string>(
-    stats.recent_alerts?.[0]?.release_id || "REL-CASE-001"
-  );
-  const [overrideText, setOverrideText] = useState("");
 
   const highlightedRelease: Release | undefined =
     stats.recent_alerts?.find((r) => r.release_id === highlightedId) || stats.recent_alerts?.[0];

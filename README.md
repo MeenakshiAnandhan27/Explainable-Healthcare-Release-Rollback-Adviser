@@ -1,132 +1,116 @@
 # Explainable Healthcare Release Rollback Adviser
 
-[![Test Suite](https://img.shields.io/badge/tests-19%20passed-brightgreen.svg)]()
+[![Test Suite](https://img.shields.io/badge/tests-20%20passed-brightgreen.svg)]()
 [![Seed 42](https://img.shields.io/badge/experiment-reproducible%20(seed%2042)-blue.svg)]()
 [![Safety](https://img.shields.io/badge/governance-advisory%20only-amber.svg)]()
 [![Data](https://img.shields.io/badge/telemetry-100%25%20synthetic-lightgrey.svg)]()
 
 > **ADVISORY SYSTEM NOTICE:**  
-> **Advisory system only — no automatic production rollback.**  
-> All high-impact actions require deliberate human confirmation by an authorized operator. Zero patient health information (PHI) is collected or stored.
+> **Advisory decision support only — no automatic production rollback.**  
+> The system provides quantitative risk scoring and explainable recommendations. All production actions require deliberate confirmation by an authorized human operator. Zero Protected Health Information (PHI) is ingested or stored.
 
 ---
 
-## 1. Project Title
-**Explainable Healthcare Release Rollback Adviser (Phase 2)**  
-An enterprise-grade, human-in-the-loop decision-support platform for healthcare software vendors maintaining distributed cloud microservices across independent hospital networks.
+## 1. Project Overview
+The **Explainable Healthcare Release Rollback Adviser** is an enterprise-grade operational decision-support system designed for healthcare software vendors maintaining distributed cloud microservices across independent hospital networks (e.g. Trauma Level 1 centers, specialty cardiac hospitals, community regional clinics).
+
+The platform replaces unstructured engineer intuition with a quantitative, transparent, and auditable release governance pipeline that synthesizes technical telemetry, business impact indicators, and clinical workflow criticality.
 
 ---
 
 ## 2. Problem Statement
-Healthcare software vendors maintain separate production deployments across dozens of independent hospital organizations (e.g. Trauma Level 1 centers, specialty cardiac hospitals, community clinics). When a new software release or hotfix causes subtle degradation, operations engineers face intense pressure.
-
-Currently, **rollback decisions depend largely on unstructured engineer intuition because release risk is not quantified**. This causes:
-- **Excessive decision latency:** Manual triage takes an average of **38.2 minutes** across routine deployments and up to **48.5–63.7 minutes** during severe, ambiguous incidents.
-- **Unnecessary false rollbacks:** Safe releases are terminated because of harmless background errors, delaying critical features.
-- **Catastrophic missed rollbacks:** Subtle clinical workflow regressions go undetected because raw server error rates appear deceptively normal.
-- **Lack of auditability:** No formal record exists explaining why an engineer chose to roll back or continue a deployment.
+In multi-tenant healthcare software environments, release rollback decisions currently depend heavily on subjective intuition because release risk is not quantified. This causes four acute operational failures:
+1. **Excessive Triage Latency:** Manual war-room triage requires an average of **38.2 minutes** across routine deployments and up to **48.5–63.7 minutes** during complex incidents.
+2. **Premature False Rollbacks:** Safe releases are terminated because of harmless background errors or transient cache warm-up latency, delaying critical clinical feature deliveries.
+3. **Catastrophic Missed Rollbacks:** Subtle clinical workflow failures (e.g. ICU medication dispensing queues blocked) slip past monitoring because raw server error rates appear deceptively green (e.g. 0.2%).
+4. **Zero Auditability:** Historical rollbacks lack documented clinical justifications and decision traces.
 
 ---
 
-## 3. Product Discovery
-Field interviews with Site Reliability Engineers (SREs) and Clinical Operations Leads reveal that **technical telemetry alone is insufficient to evaluate release risk in healthcare**:
-- An error spike on a non-critical background billing export job should not trigger a high-severity hospital-wide software rollback.
-- Conversely, a silent regression blocking medication ordering in an intensive care unit (ICU) requires immediate rollback even if server HTTP error rates remain low (e.g. 0.2%).
-- Clinical impact severity (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`) and affected hospital workflows must be synthesized directly alongside technical telemetry.
-- Full product discovery analysis is documented in [`docs/product_discovery.md`](docs/product_discovery.md).
+## 3. Objectives
+- **Quantify Release Risk:** Compute a normalized, bounded risk score (0–100) combining technical telemetry and clinical workflow impact.
+- **100% Explainable Recommendations:** Explain every recommendation with transparent mathematical evidence, threshold deltas, and narrative points.
+- **Enforce Human Authority:** Maintain a strictly advisory boundary requiring human operator confirmation for high-impact actions.
+- **Mandate Override Accountability:** Enforce documented operational justifications ($\ge 10$ characters) whenever an operator disagrees with the adviser.
+- **Reduce Decision Latency:** Lower average decision time from **38.2 minutes down to $\le 10.0$ minutes** (achieved: **4.3 minutes**, an 88.7% reduction).
+- **Zero Missed Rollbacks:** Eliminate missed rollbacks on patient-care impacting regressions (achieved: **0.0%** missed rollbacks).
 
 ---
 
-## 4. Users & Organizational Personas
-The platform supports two primary enterprise operator profiles:
-1. **SOC / Operations Analyst (e.g. Marcus Vance, Tier 2 Analyst):**
-   - 24/7 deployment queue monitoring across hospital tenants.
-   - Inspects explainable triggered-rule evidence.
-   - Executes human confirmation on advisory recommendations.
-   - Authorizes overrides by providing mandatory documented clinical justification.
-   - *Read-only access* to risk rule configurations.
-2. **Release Manager (e.g. Elena Rostova, Lead Release Manager):**
-   - All analyst privileges.
-   - Calibrates and reconfigures risk rule thresholds and weights (R1–R6).
-   - Audits rule modification histories.
-   - Runs reproducible A/B benchmark experiments and inspects regression suites.
-   - Evaluates multi-role stakeholder validation.
+## 4. Key Features
+- **Multi-Hospital Telemetry Isolation:** Partitioned monitoring across 5 distinct hospital systems (`HOSP-CGH-01` through `HOSP-GVH-05`).
+- **Configurable Deterministic Rules (R1–R6):** Dynamic runtime threshold and weight calibration with server-side RBAC guards.
+- **Explainable Evidence Breakdown:** Granular telemetry inspection comparing observed signals, baselines, and safety thresholds.
+- **Immutable Audit Logging:** Complete audit history capturing operator identity, timestamp, role, recommendation, and override justification.
+- **Rule Modification Change Log:** Captures before/after threshold and weight state for every rule update.
+- **13-Step Usability Walkthrough:** Interactive end-to-end operator tour (`/walkthrough`).
+- **Side-by-Side Release Comparison:** Multi-release telemetry diffing and recommendation delta analysis (`/compare`).
+- **Simulated Prometheus & Anomaly Detection:** Standard Prometheus metrics exposition (`/api/observability/prometheus`) and auxiliary statistical anomaly detection (`/api/observability/anomaly/:id`).
 
 ---
 
-## 5. Current Workflow (Manual / Intuition)
+## 5. User Roles & RBAC Matrix
+The system enforces strict Role-Based Access Control:
+
+| Capability | SOC / Operations Analyst | Release Manager | Security Enforcement |
+| :--- | :---: | :---: | :--- |
+| **Inspect Release Telemetry & Evidence** | Yes | Yes | Read-only API |
+| **Submit Decision / Authorize Action** | Yes | Yes | Payload identity validation |
+| **Override Adviser Recommendation** | Yes | Yes | **Mandatory $\ge 10$ char justification** |
+| **View Historical Audit Logs** | Yes | Yes | Filterable read-only access |
+| **Reconfigure Risk Rules (R1–R6)** | **DENIED (403 Forbidden)** | **AUTHORIZED (200 OK)** | **Server-side RBAC Guard in `server.ts`** |
+| **Review Rule Change History** | Yes | Yes | Full transparency |
+| **Run Benchmark Experiments** | Yes | Yes | Statistical engine |
+
+---
+
+## 6. System Architecture
 ```
-[ Release Deployed ]
-         ↓
-[ Engineer Checks APM / Grafana (Latency, Errors) ]
-         ↓
-[ Engineer Scours Server Logs ]
-         ↓
-[ Engineer Contacts Hospital Clinical Helpdesk ]
-         ↓
-[ Ad-Hoc Incident Bridge Formed (38.2 - 63.7 mins) ]
-         ↓
-[ Uncalibrated Rollback / Continue Decision ]
++---------------------------------------------------------------------------------------------------+
+|                     Explainable Healthcare Release Rollback Adviser Architecture                  |
++---------------------------------------------------------------------------------------------------+
+
+   +---------------------------------------------------------------------------------------------+
+   |                                      DATA FLOW PIPELINE                                     |
+   |                                                                                             |
+   |   Release Telemetry           Schema Validation          Configurable Rules (R1-R6)         |
+   |  [ Latency, Errors,   ]  ---> [ Type / Boundary /  ] ---> [ Deterministic Rule Engine ]        |
+   |  [ Transactions, Cust ]       [ Null Signal Checks ]       [ Threshold & Weight Eval  ]        |
+   |                                                                          |                  |
+   |                                                                          v                  |
+   |   Audit Trail & Storage        Human Oversight & Modal          Transparent Risk Score       |
+   |  [ decisions.json      ] <--- [ Mandatory Confirm / ] <--- [ Points (0-100), Level   ]       |
+   |  [ validations.json    ]      [ Override Justify    ]      [ Triggered Rule Evidence ]       |
+   |  [ rules_audit.json    ]                                                                    |
+   |                                              |                                              |
+   |                                              v                                              |
+   |                               [ Reproducible Experiment & Analytics ]                       |
+   +---------------------------------------------------------------------------------------------+
 ```
+Full technical architecture details are available in [`docs/architecture.md`](docs/architecture.md).
 
 ---
 
-## 6. Proposed Workflow (Explainable Adviser)
-```
-[ Release Deployed to Hospital Tenant ]
-         ↓
-[ Multi-Dimensional Telemetry Collected (Latency, Errors, Transactions, Clinical Impact) ]
-         ↓
-[ Schema & Data Quality Validation (Rejects Corrupt / Missing Signals) ]
-         ↓
-[ Configurable Deterministic Rules Evaluated (R1-R6) ]
-         ↓
-[ Risk Quantified: Normalized Transparent Score (0-100 Points) ]
-         ↓
-[ Explainability Layer Displays Exact Triggered Rules & Threshold Deltas ]
-         ↓
-[ Advisory Recommendation Generated: CONTINUE | HUMAN REVIEW | ROLLBACK RECOMMENDED ]
-         ↓
-[ Human Confirmation Modal: Operator Confirms or Overrides with Mandatory Reason ]
-         ↓
-[ Immutable Audit Record Stored (< 4.3 mins) ]
-```
+## 7. Technology Stack
+- **Frontend SPA:** React 19, TypeScript, Vite 6, Tailwind CSS v4, Lucide-React, Recharts
+- **Backend API:** Node.js 22, Express 4.21, TypeScript, `tsx`
+- **Testing Suites:** Python 3.10 regression runner (`tests/run_all_tests.py`) + TypeScript runner (`npm test`)
+- **Containerization & Staging:** Multi-stage `Dockerfile`, `docker-compose.yml`
+- **Data Persistence:** Schema-validated JSON file storage (`data/` directory)
 
 ---
 
-## 7. Architecture
-The system employs a full-stack, enterprise-grade architecture:
-- **Presentation Tier:** React 19 SPA, Tailwind CSS v4, Lucide Icons, Recharts data visualization.
-- **Backend & API Tier:** Node.js 22 + TypeScript Express 4.21 server with integrated Vite middleware on port 3000.
-- **Decision Engine:** Deterministic rule engine evaluating mathematical comparisons across technical telemetry and clinical impact signals.
-- **Audit & Persistence Tier:** Schema-validated JSON file storage (`releases.json`, `decisions.json`, `validations.json`, `default_rules.json`, `rules_audit.json`).
-- Full architecture specifications available in [`docs/architecture.md`](docs/architecture.md).
+## 8. Data Flow
+1. **Telemetry Ingestion:** Real-time metrics (P95 latency ms, error rate %, transaction volume, availability %, and clinical impact) ingested from hospital proxy.
+2. **Sanitization:** Validates telemetry boundaries (rejecting negative latency and error rates $>100\%$).
+3. **Rule Evaluation:** Evaluates active rules R1–R6 against thresholds.
+4. **Scoring:** Bounded summation maps points to `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL` risk tiers.
+5. **Human Authorization:** Operator reviews triggered evidence cards and submits confirmation or justified override.
+6. **Persistence:** Appends immutable decision record to `data/decisions.json`.
 
 ---
 
-## 8. Technology Stack
-- **Frontend:** React 19, TypeScript, Vite 6, Tailwind CSS v4, Recharts, Lucide-React
-- **Backend:** Express 4.21, TypeScript, Node.js 22
-- **Testing:** Python 3.10 test suite + TypeScript / tsx test runner
-- **Reproducibility:** Python / TypeScript statistical experiment engines
-
----
-
-## 9. Data Model
-Every release record conforms to the following schema:
-- `release_id`: Unique identifier (e.g. `REL-CASE-001`, `REL-2026-0042`)
-- `hospital_id` & `hospital_name`: Tenant identifier (e.g. `HOSP-CGH-01`, City General Hospital)
-- `application_name`: Clinical service (e.g. `Clinical Portal`, `Pharmacy Management Service`)
-- `version` & `previous_version`: Version delta
-- `latency_ms`, `latency_baseline_ms`, `latency_change_percent`: P95 latency measurements
-- `error_rate_percent`, `error_baseline_percent`, `error_change`: HTTP 5xx error metrics
-- `transaction_count`, `baseline_transaction_count`, `transaction_drop_percent`: Throughput volume
-- `customer_impact_level`: Clinical severity (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`)
-- `affected_workflows`: Specific impacted clinical pathways (e.g. `ICU medication dispensing`)
-
----
-
-## 10. Risk Rules (R1–R6)
+## 9. Risk Rules (R1–R6)
 | Rule ID | Rule Name | Category | Metric Inspected | Condition & Threshold | Risk Weight |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **R1** | High Error Rate | Technical | `error_rate_percent` | $> 5.0\%$ | **+30 points** |
@@ -138,213 +122,140 @@ Every release record conforms to the following schema:
 
 ---
 
-## 11. Risk Scoring
-Risk score is calculated as the sum of all triggered active rule weights:
-$$\text{Risk Score} = \min\left(100, \max\left(0, \sum_{r \in \text{Triggered}} \text{Weight}_r\right)\right)$$
-- **Score $< 30$:** `LOW` risk $\implies$ `CONTINUE`
-- **$30 \le \text{Score} < 60$:** `MEDIUM` risk $\implies$ `HUMAN REVIEW`
-- **$60 \le \text{Score} < 80$:** `HIGH` risk $\implies$ `ROLLBACK RECOMMENDED`
-- **$\text{Score} \ge 80$:** `CRITICAL` risk $\implies$ `ROLLBACK RECOMMENDED (HIGH IMPACT CONFIRMATION REQUIRED)`
-
----
-
-## 12. Explainability
+## 10. Explainability
 Every recommendation exposes:
-- **Numerical Risk Score** and categorical risk level.
-- **Triggered Rule Cards:** Detailed mathematical delta between actual signal and threshold.
-- **Plain-English Narrative Points:** Direct translation into clinical and technical impact.
-- **Visual Telemetry Comparison:** Current vs. baseline values.
+- **Numerical Risk Score (0–100):** Capped sum of active triggered rule weights.
+- **Triggered Rule Cards:** Exact observed value, baseline, threshold, and mathematical contribution.
+- **Clinical Narrative Points:** Plain-English summary explaining clinical impact.
+- **Auxiliary Anomaly Indicator:** Statistical Z-score deviation analysis.
 
 ---
 
-## 13. Human Confirmation
-The platform is **strictly advisory**. The system never modifies container orchestrators or triggers automatic rollbacks. All high-impact advisories require explicit human confirmation via an interactive decision modal verifying operator identity and role.
+## 11. Human-in-the-Loop Workflow
+- **Advisory Only:** No automatic rollback hooks exist in the codebase.
+- **High-Impact Modal:** Recommendations of `ROLLBACK RECOMMENDED` require interactive operator authorization.
+- **Mandatory Override Justification:** Diverging from the adviser requires a documented reason ($\ge 10$ characters). Empty justifications fail with HTTP 400 Bad Request.
 
 ---
 
-## 14. Override Workflow
-If an operator selects a decision differing from the adviser's recommendation (e.g. continuing a release where rollback was recommended):
-- An override flag is triggered.
-- A **mandatory documented clinical or operational justification (minimum 10 characters)** is strictly required.
-- Empty or trivial reasons are rejected with HTTP 400 Bad Request.
-- Full justification is permanently committed to the immutable audit trail.
+## 12. API Documentation Summary
+The application exposes **21 REST API endpoints**. Complete specifications are documented in [`docs/api.md`](docs/api.md).
+
+| Category | Endpoints |
+| :--- | :--- |
+| **System & Health** | `GET /api/health` |
+| **Authentication** | `POST /api/auth/login` |
+| **Tenants & Catalogs** | `GET /api/hospitals`, `GET /api/releases`, `GET /api/releases/:id` |
+| **Risk Rules & Engine**| `GET /api/rules`, `PUT /api/rules/:rule_id`, `GET /api/rules/audit`, `POST /api/rules/evaluate` |
+| **Decisions & Audits** | `POST /api/decisions`, `GET /api/decisions` |
+| **Analytics & KPIs** | `GET /api/dashboard/stats`, `GET /api/analytics/multi-hospital` |
+| **Observability (P3)** | `GET /api/observability/prometheus`, `GET /api/observability/anomaly/:release_id` |
+| **Experiments & Tests**| `GET /api/experiments`, `POST /api/experiment/run`, `POST /api/tests/run` |
+| **Stakeholder Feedback**| `POST /api/validations`, `GET /api/validations` |
 
 ---
 
-## 15. Role Permissions (RBAC)
-| Action | SOC / Operations Analyst | Release Manager |
-| :--- | :---: | :---: |
-| View Multi-Hospital Deployments | Yes | Yes |
-| Inspect Telemetry & Explainable Evidence | Yes | Yes |
-| Authorize Action / Submit Decision | Yes | Yes |
-| Override Recommendation with Reason | Yes | Yes |
-| View Decision Audit Logs | Yes | Yes |
-| Reconfigure Risk Rules (Thresholds & Weights) | **No (403 Forbidden)** | **Yes (200 OK)** |
-| Review Rule Change Audit Trail | Yes | Yes |
-| Run Reproducible Benchmark Experiments | Yes | Yes |
+## 13. Data & Schema Documentation Summary
+All data is stored in structured, schema-validated JSON files in `/data/` and `/rules/`. Complete specifications are documented in [`docs/data_schema.md`](docs/data_schema.md).
+- **`data/releases.json`:** 512 synthetic multi-tenant hospital releases.
+- **`data/decisions.json`:** Human authorization decisions and override justifications.
+- **`rules/default_rules.json`:** Canonical R1–R6 rules.
+- **`data/rules_audit.json`:** Before/after change logs for rule calibrations.
+- **`data/validations.json`:** Authentic stakeholder feedback reviews.
 
 ---
 
-## 16. Experiment Methodology
-- **Fixed Random Seed:** `42` for 100% deterministic reproducibility.
-- **Sample Cohort:** 60 benchmark releases representing routine continues, elevated human reviews, and critical rollbacks across 5 hospitals.
-- **Automation Scripts:** `scripts/run_experiment.py` (Python) and `scripts/run_experiment.ts` (TypeScript).
-- **Exports:** Automatic generation of `experiments/results.json` and `experiments/results.csv`.
-- Complete details in [`docs/experiment_methodology.md`](docs/experiment_methodology.md).
+## 14. Testing Instructions
+The test suite consists of **20 automated executable tests** across Python and TypeScript. Full technical specifications in [`docs/testing.md`](docs/testing.md).
 
----
-
-## 17. Baseline Decision Time
-The **Primary Baseline** is established as **38.2 minutes**, representing the arithmetic mean across all 60 scenarios in the evaluation benchmark cohort. The **Incident Subset Baseline** of **48.5 – 63.7 minutes** represents high-ambiguity triage war rooms.
-
----
-
-## 18. Target Decision Time
-The design target for the adviser is:
-$$\text{Target Decision Time} \le 10.0\text{ minutes}$$
-
----
-
-## 19. Measured Result
-Across the reproducible benchmark cohort:
-- **Measured Adviser Decision Time:** **4.3 minutes** (Median: 4.3 min; P25: 3.4 min, P75: 5.0 min)
-- **Decision-Time Reduction:** **88.7% reduction** vs. baseline
-- **Decision Accuracy:** **95.0%** (57/60 correct decisions)
-- **False Rollback Rate:** **3.3%** (2/60)
-- **Missed Rollback Rate:** **0.0%** (0/60 on patient-care impacting failures)
-
----
-
-## 20. Error Analysis
-A dedicated Error Analysis dashboard (`/error-analysis`) classifies all decisions:
-- Correct Rollbacks: 20
-- Correct Continues: 26
-- Correct Human Reviews: 11
-- False Rollbacks: 2 (3.3%)
-- Missed Rollbacks: 0 (0.0%)
-
----
-
-## 21. Failure Modes & Edge Cases
-Detailed catalog in [`docs/failure_mode_analysis.md`](docs/failure_mode_analysis.md) covering 6 critical cases:
-1. High latency (+65%) but normal errors (0.35%) $\implies$ Avoids premature rollback; flags `HUMAN REVIEW`.
-2. High errors (7.5%) but low customer impact $\implies$ Flags technical failure via R1.
-3. Low technical risk but CRITICAL clinical impact $\implies$ Escalates risk via R5 (+40 pts) to `HUMAN REVIEW`.
-4. Missing latency signal $\implies$ Safely handled without crashing or falsely triggering rules.
-5. Zero transactions (100% throughput collapse) $\implies$ Triggers R3 (+25 pts).
-6. Conflicting technical signals $\implies$ Accumulates orthogonal risk (55 pts).
-
----
-
-## 22. Testing Suite
-The repository includes **19 automated executable tests** across Python and TypeScript:
-- Benchmark failure scenarios (TEST 01–03)
-- Edge cases and telemetry failures (TEST 04–06)
-- Human confirmation & override governance (TEST 07–08)
-- RBAC authorization and rule audits (TEST 09–11)
-- Data quality & schema validation (TEST 12–14)
-- Bounded risk score verification (TEST 15)
-- Disabled rule suppression (TEST 16)
-- Dynamic threshold alteration verification (TEST 17)
-- Evidence matching verification (TEST 18)
-- Reproducible experiment metric verification (TEST 19)
-
----
-
-## 23. Stakeholder Validation
-Interactive review module (`/validation`) collecting authentic multi-role feedback (role, ease of use 1–5, explanation clarity 1–5, confidence 1–5, and usability suggestions) without fabricating responses.
-
----
-
-## 24. Ethics and Safety
-Comprehensive safety governance documented in [`docs/ethics_and_safety.md`](docs/ethics_and_safety.md) establishing:
-- Advisory-only architecture; no automated production execution.
-- 100% synthetic simulation data; zero Protected Health Information (PHI).
-- Clinical non-interference boundary (release governance only; strictly not for clinical diagnostic/treatment decisions).
-
----
-
-## 25. Deployment Checklist
-Operational audit checklist in [`docs/deployment_checklist.md`](docs/deployment_checklist.md) covering 22 operational controls across Environment, Security, Monitoring, Operations, and Validation, with clear separation between prototype controls and planned enterprise production.
-
----
-
-## 26. Installation & Local Setup
 ```bash
-# 1. Clone repository
-git clone https://github.com/MeenakshiAnandhan27/Explainable-Healthcare-Release-Rollback-Adviser.git
-cd Explainable-Healthcare-Release-Rollback-Adviser
-
-# 2. Install dependencies
-npm install
-
-# 3. Configure environment
-cp .env.example .env
-```
-
----
-
-## 27. Run Commands
-```bash
-# Start unified full-stack development server (Express + Vite on Port 3000)
-npm run dev
-
-# Run automated regression test suite (TypeScript)
+# Run TypeScript test suite (Node.js 22 runtime)
 npm test
 
-# Run automated regression test suite (Python)
+# Run Python 3.10 regression test suite
+python3 tests/run_all_tests.py
+# or via npm alias:
 npm run test:py
-
-# Generate synthetic dataset (512 releases)
-python3 scripts/generate_data.py
-
-# Execute reproducible experiment benchmark
-python3 scripts/run_experiment.py
-
-# Build for production deployment
-npm run build
 ```
 
 ---
 
-## 28. Demo Credentials (Simulated Operator Accounts)
-| Role | Demo Username | Password | Operator Identity |
-| :--- | :--- | :--- | :--- |
-| **SOC / Operations Analyst** | `analyst` | `analyst123` | Marcus Vance, SOC Tier 2 |
-| **Release Manager** | `manager` | `manager123` | Elena Rostova, Release Manager |
+## 15. Error Handling Architecture
+- **React Error Boundary (`src/components/ErrorBoundary.tsx`):** Catches rendering exceptions safely, displaying an isolated recovery UI without crashing the dashboard.
+- **Centralized Express Error Handler:** Standardizes error responses with status codes (`400`, `401`, `403`, `404`, `500`).
+- **Telemetry Drop Handling:** Null signals are surfaced as warnings without false clean triggers.
+- Full details in [`docs/error_handling.md`](docs/error_handling.md).
 
 ---
 
-## 29. Limitations
-1. **Synthetic Telemetry Simulation:** All 512 releases and tenant histories are synthetic simulations generated with fixed seed 42 to prevent any exposure of confidential patient data.
-2. **Clinical Non-Interference:** The platform is strictly an **IT software deployment release governance tool**. It must **never** be used for clinical diagnostic, therapeutic, or patient triage decisions.
-3. **Storage Tier:** In this prototype, data persists in schema-validated JSON files; production requires multi-region PostgreSQL / Cloud SQL.
+## 16. Experiment Instructions
+```bash
+# Run reproducible statistical experiment (Seed 42)
+python3 scripts/run_experiment.py
+# or via npm alias:
+npm run experiment
+
+# Generate expanded synthetic dataset (default: 512, configurable)
+python3 scripts/generate_data.py --count 512 --seed 42
+```
+Outputs are exported to `experiments/results.json` and `experiments/results.csv`.  
+Methodology and baseline reconciliation documented in [`docs/experiment_methodology.md`](docs/experiment_methodology.md).
 
 ---
 
-## 30. Project Status & Future Work
+## 17. Deployment Instructions
+### Local Staging Deployment via Docker Compose
+```bash
+# 1. Build and run containerized staging environment
+docker-compose up --build -d
 
-### COMPLETED (Phase 2)
-- Fully functional React 19 + Express full-stack architecture.
-- 13-step interactive Usability Walkthrough page (`/walkthrough`).
-- Dedicated Ethics & Safety governance page (`/ethics`) and documentation.
-- Deployment Readiness checklist (`/deployment`) with prototype indicators.
-- 19 automated executable regression and edge-case tests.
-- Reproducible experiment engine (Seed 42) exporting `results.json` and `results.csv`.
-- Resolution of the 38.2 min vs. 48.5 min baseline discrepancy.
-- Error Analysis page (`/error-analysis`) with confusion matrix.
-- Failure Mode Analysis catalog (`/failure-modes`) and documentation.
-- Release Comparison tool (`/compare`) with side-by-side metric diffs.
-- Multi-hospital analytics dashboard charts.
-- Configurable rule change audit log and strict RBAC guards.
-- Authentic, un-fabricated stakeholder validation module (`/validation`).
+# 2. Check service health
+curl http://localhost:3000/api/health
 
-### IN PROGRESS
-- Containerized staging deployment profiles.
-- Expanded simulated tenant dataset generation (scaling to 20 hospital topologies).
+# 3. View live container logs
+docker-compose logs -f
+```
 
-### FUTURE (Phase 3)
+### Standard Node.js Setup
+```bash
+npm install
+npm run build
+npm start
+```
+Full operational readiness audit available in [`docs/deployment_checklist.md`](docs/deployment_checklist.md).
+
+---
+
+## 18. Safety & Ethics Governance
+- **Advisory System Boundary:** Strictly decision support; zero automated deployment actions.
+- **Clinical Non-Interference:** Release governance only; strictly not for clinical diagnostic/treatment decisions.
+- **Zero Real PHI:** All data is 100% synthetic simulation.
+- Complete 10 safety mandates documented in [`docs/ethics_and_safety.md`](docs/ethics_and_safety.md).
+
+---
+
+## 19. Limitations
+1. **Synthetic Telemetry Simulation:** All 512 releases and tenant histories are synthetic simulations generated with fixed seed `42` to guarantee zero PHI exposure.
+2. **Clinical Non-Interference:** The platform is strictly an IT deployment release governance tool.
+3. **Storage Tier:** Prototype persists data in schema-validated JSON files; enterprise production requires distributed PostgreSQL with Row-Level Security.
+
+---
+
+## 20. Phase 3 Additions & Enhancements
+- **Unit Testing Technical Documentation:** Detailed test specifications and architectures in [`docs/testing.md`](docs/testing.md).
+- **Error Boundary Documentation:** Comprehensive client/server error handling guide in [`docs/error_handling.md`](docs/error_handling.md).
+- **Expanded REST API Reference:** Dedicated reference guide in [`docs/api.md`](docs/api.md).
+- **Data Schema Documentation:** Entity relationship schemas and PostgreSQL DDL mappings in [`docs/data_schema.md`](docs/data_schema.md).
+- **Staging Deployment Configuration:** Multi-stage `Dockerfile` and `docker-compose.yml`.
+- **Scalable Data Generator:** Python CLI generator with `--count` and `--seed` arguments.
+- **Simulated Prometheus Exposition:** Metrics endpoint at `/api/observability/prometheus`.
+- **Auxiliary Statistical Anomaly Detection:** Modified Z-score anomaly detector mounted at `/api/observability/anomaly/:id` and visual card on Release Detail view.
+- **Security & RBAC Documentation:** Complete privilege audit guide in [`docs/security.md`](docs/security.md).
+
+---
+
+## 21. Future Work (Phase 4 Enterprise Roadmap)
+- Enterprise PostgreSQL / Cloud SQL migration with Row-Level Security (RLS).
+- Live OpenTelemetry and Prometheus push connectors for Istio/Envoy service mesh.
 - Enterprise SAML 2.0 / Okta SSO integration.
-- Live OpenTelemetry and Prometheus push connectors.
-- PostgreSQL / Cloud SQL enterprise persistence.
-- Auxiliary unsupervised anomaly detection machine learning models for diurnal baseline forecasting.
+- Continuous multi-hospital canary analysis pipelines.
